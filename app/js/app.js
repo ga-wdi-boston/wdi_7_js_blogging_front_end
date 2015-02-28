@@ -61,7 +61,7 @@ App.submitPost = function(event){
 
 App.getAllUsers = function(){
   $.ajax({
-    url: '',
+    url: 'http://localhost:3000/users',
     type: 'GET',
     dataType: 'JSON',
   })
@@ -80,7 +80,7 @@ App.listAllUsers = function(users){
   };
 };
 
-App.showUser = function(){
+App.showUser = function(user){
   var html = '';
   html += '<h3>' + user.name + '</h3>';
   html += '<p>' + user.about + '</p>';
@@ -129,6 +129,7 @@ $(document).ready(function(){
   });
 
   App.getAllPosts();
+  App.getAllUsers();
 
   $('form#new-post-form').on('submit', App.getAllPosts);
 
