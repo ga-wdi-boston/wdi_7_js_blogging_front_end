@@ -42,3 +42,4 @@ Some resources for this:
 ### Show the categories for each post
 ### Much more bonus goes to anyone who implements a front-end templating library like [Handlebars](http://handlebarsjs.com/) or [Nunjucks](http://mozilla.github.io/nunjucks/)
 ### Build out the SASS Framework I've set you up with.
+
