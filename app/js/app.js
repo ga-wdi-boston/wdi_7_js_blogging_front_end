@@ -10,7 +10,7 @@ var trace = function(){
 
 $(document).ready(function(){
 
-  App.Posts.get();
+  App.Posts.getPosts();
 
   var $userForm = $('form#user-form');
   $userForm.on('submit', function(e){

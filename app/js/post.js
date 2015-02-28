@@ -2,12 +2,22 @@ var App = App || {};
 
 App.Posts = App.Posts || {};
 
-App.Posts.get = function(){
+App.Posts.getPosts = function(){
   $.ajax({
     url: ' http://localhost:3000/posts',
     type: 'GET',
     dataType: 'JSON',
   }).done(App.Posts.directPosts);
+};
+
+App.Posts.getPost = function(id){
+  $.ajax({
+    url: ' http://localhost:3000/posts/' + id,
+    type: 'GET',
+    dataType: 'JSON',
+  }).done(function(data){
+    console.log(data);
+  })
 };
 
 App.Posts.directPosts = function(posts){
