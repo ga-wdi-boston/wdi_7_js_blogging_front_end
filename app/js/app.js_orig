@@ -36,7 +36,7 @@ App.submitUser = function(event, form){
   });
 };
 
-App.submitPost = function(event){
+App.submitPost = function(e){
   if(event.preventDefault) event.preventDefault();
   $.ajax({
     url:"http://localhost:3000/posts",
@@ -51,30 +51,17 @@ App.submitPost = function(event){
     headers: {'AUTHORIZATION': '4d4bcfb81b4247bdbd9649cc39c936d5'}
   }).done(function(data){
       trace(data);
-      App.showPosts();
+      showPost(data);
   }).fail(function(jqXHR, textStatus, errorThrown){
       trace(jqXHR, textStatus, errorThrown);
   });
 };
 
-App.showPosts = function(results){
-  $('.posts').append('<article>' + results[0].title + '<br>' + results[0].body + '</article>');
+App.showPost = function(data){
+  $('#posts').append('Something');
 };
 
-App.getPosts = function(){
-  $.ajax({
-    url: 'http://localhost:3000/posts',
-    type: 'GET',
-    dataType: 'JSON'
-  })
-  .done(function(results) {
-    App.showPosts(results);
-  });
-};
-
-App.init = function() {
-  App.getPosts();
-
+$(document).ready(function(){
   var $userForm = $('form#user-form');
   $userForm.on('submit', function(event){
     App.submitUser(event,$userForm);
@@ -85,12 +72,7 @@ App.init = function() {
     App.submitPost(event);
   });
 
-};
-
-$(document).ready(function(){
-  App.init();
   trace('hello world');
-  //$('.posts').append('Something');
 });
 
 
