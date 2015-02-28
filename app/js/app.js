@@ -58,7 +58,6 @@ App.submitPost = function(event){
     },
     headers: {'AUTHORIZATION': '995c3568de8549b687dede7c6a96eb75'},
   }).done(function(data){
-    // trace(data);
     App.addOnePost(data);
     post.data = data;
     $('#new-post-form .clear-me').val('');
@@ -74,10 +73,21 @@ App.submitPost = function(event){
   $(':checkbox:checked').each(function(i){
     categories[i] = $(this).val();
   });
+};
 
+App.deletePost = function(id){
+  // debugger
 
-
-
+  $.ajax({
+    url: 'http://localhost:3000/posts/' + parseInt(id),
+    type: 'DELETE',
+    headers: {'AUTHORIZATION': '995c3568de8549b687dede7c6a96eb75'},
+  }).done(function(data){
+    trace(data)
+    $('.post#'+ parseInt(id)).remove();
+  }).fail(function(jqXHR, textStatus, errorThrown){
+    trace(jqXHR, textStatus, errorThrown);
+  });
 };
 
 App.Post = function(id, title, body, created, categories) {
@@ -93,14 +103,17 @@ App.addOnePost = function(post){
   var catString = '';
   post.categories.forEach(function(cat){catString += cat.name + ' '});
   var $newPostHTML = $('<div class=post id='+ post.id + ' data-categories="' + catString + '">');
-  $newPostHTML.html('<h3>' + post.title + '</h3>' + '<p>' + post.body + '</p>');
+  $newPostHTML.html('<h3>' + post.title + '</h3>' + '<p>' + post.body + '</p>' + '<input type=button class=delete id=' + post.id + ' value="Delete Post" >');
   App.$posts.prepend($newPostHTML);
 };
 
-// App.patchCategories = function(post){
 
+
+// App.patchCategories = function(post){
 //   $.ajax({
-//     url:
+//     url: 'http://localhost:3000/posts/' + post.id + '/categories' + category.id,
+//     type: 'PATCH',
+//     headers: {'AUTHORIZATION': '995c3568de8549b687dede7c6a96eb75'},
 //   }).done().fail();
 // };
 
@@ -111,6 +124,10 @@ App.getAllPosts = function(){
   })
   .done(function(data){
     data.reverse().forEach(App.addOnePost);
+    var $deleteButtons = $('[type=button].delete');
+      $deleteButtons.on('click', function(){
+        App.deletePost(this.id);
+      });
   })
 };
 
@@ -125,7 +142,7 @@ App.Category = function(id, name) {
 
 App.addOneCategory = function(category){
   var newCategory = new App.Category(category.id, category.name);
-  var $newCategoryHTML = $('<input type="checkbox" name="category" class="clear-me" value="' + category.name + '"> ' + category.name + '<br>');
+  var $newCategoryHTML = $('<input type="checkbox" name="category" class="clear-me" value="' + category.id + '"> ' + category.name + '<br>');
   var $newCategoryButton = $('<input type="button" class="category" id=' + category.name + ' value=' + category.name + '></input>')
   App.$categories.append($newCategoryHTML);
   App.$categoryButtons.append($newCategoryButton);
@@ -137,9 +154,16 @@ App.getAllCategories = function(){
     type: 'GET'
   })
   .done(function(data){
-    data.forEach(App.addOneCategory);
-  })
-
+      data.forEach(App.addOneCategory);
+      var $categoryButtons = $('[type=button].category');
+      $categoryButtons.on('click', function(){
+        App.toggleCategory(this.id);
+      });
+      var $allPosts = $('.post');
+      $('[value="Show All"]').on('click', function(){
+        $allPosts.show();
+      });
+    });
 };
 
 App.toggleCategory = function(category) {
@@ -165,20 +189,6 @@ $(document).ready(function(){
   $postForm.on('submit', function(event){
     App.submitPost(event);
   });
-
-  setTimeout(function(){
-    var $categoryButtons = $('[type=button].category');
-    $categoryButtons.on('click', function(){
-      App.toggleCategory(this.id);
-    });
-    var $allPosts = $('.post');
-    $('[value="Show All"]').on('click', function(){
-      $allPosts.show();
-    });
-  },2000);
-
-
-
 });
 
 //user token "995c3568de8549b687dede7c6a96eb75"
