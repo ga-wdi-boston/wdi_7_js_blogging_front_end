@@ -44,8 +44,11 @@ App.submitUser = function(event, form){
 
 App.submitPost = function(event){
   if (event.preventDefault) event.preventDefault();
+  var categories = [];
+  $(':checkbox:checked').each(function(i){
+    categories[i] = $(this).val();
+  });
 
-  var post = {};
   $.ajax({
     url: 'http://localhost:3000/posts',
     type: 'POST',
@@ -57,27 +60,32 @@ App.submitPost = function(event){
       },
     },
     headers: {'AUTHORIZATION': '995c3568de8549b687dede7c6a96eb75'},
-  }).done(function(data){
-    App.addOnePost(data);
-    post.data = data;
+  }).done(function(post){
+    App.addOnePost(post);
+    App.addCategoriesToPost(post, categories);
+    $('.post#' + post.id).data("categories", categories.join(' '));
+    debugger
     $('#new-post-form .clear-me').val('');
   }).fail(function(jqXHR, textStatus, errorThrown){
     trace(jqXHR, textStatus, errorThrown);
   });
+};
 
-  setTimeout(function(){
-    trace(post);
-  },2000);
+App.addCategoriesToPost = function(post, categories){
 
-  var categories = [];
-  $(':checkbox:checked').each(function(i){
-    categories[i] = $(this).val();
-  });
+  categories.forEach(function(category){
+    $.ajax({
+    url: 'http://localhost:3000/posts/' + post.id + '/categories/' + category,
+    type: 'PATCH',
+    headers: {'AUTHORIZATION': '995c3568de8549b687dede7c6a96eb75'},
+    }).done(function(data){
+
+    }).fail();
+  })
+
 };
 
 App.deletePost = function(id){
-  // debugger
-
   $.ajax({
     url: 'http://localhost:3000/posts/' + parseInt(id),
     type: 'DELETE',
@@ -101,7 +109,7 @@ App.Post = function(id, title, body, created, categories) {
 App.addOnePost = function(post){
   var newPost = new App.Post(post.id, post.title, post.body, post.created_at, post.categories);
   var catString = '';
-  post.categories.forEach(function(cat){catString += cat.name + ' '});
+  post.categories.forEach(function(cat){catString += cat.id + ' '});
   var $newPostHTML = $('<div class=post id='+ post.id + ' data-categories="' + catString + '">');
   $newPostHTML.html('<h3>' + post.title + '</h3>' + '<p>' + post.body + '</p>' + '<input type=button class=delete id=' + post.id + ' value="Delete Post" >');
   App.$posts.prepend($newPostHTML);
@@ -109,13 +117,6 @@ App.addOnePost = function(post){
 
 
 
-// App.patchCategories = function(post){
-//   $.ajax({
-//     url: 'http://localhost:3000/posts/' + post.id + '/categories' + category.id,
-//     type: 'PATCH',
-//     headers: {'AUTHORIZATION': '995c3568de8549b687dede7c6a96eb75'},
-//   }).done().fail();
-// };
 
 App.getAllPosts = function(){
   $.ajax({
@@ -143,7 +144,7 @@ App.Category = function(id, name) {
 App.addOneCategory = function(category){
   var newCategory = new App.Category(category.id, category.name);
   var $newCategoryHTML = $('<input type="checkbox" name="category" class="clear-me" value="' + category.id + '"> ' + category.name + '<br>');
-  var $newCategoryButton = $('<input type="button" class="category" id=' + category.name + ' value=' + category.name + '></input>')
+  var $newCategoryButton = $('<input type="button" class="category" id=' + category.id + ' value=' + category.name + '></input>')
   App.$categories.append($newCategoryHTML);
   App.$categoryButtons.append($newCategoryButton);
 };
@@ -155,10 +156,12 @@ App.getAllCategories = function(){
   })
   .done(function(data){
       data.forEach(App.addOneCategory);
+
       var $categoryButtons = $('[type=button].category');
       $categoryButtons.on('click', function(){
         App.toggleCategory(this.id);
       });
+
       var $allPosts = $('.post');
       $('[value="Show All"]').on('click', function(){
         $allPosts.show();
