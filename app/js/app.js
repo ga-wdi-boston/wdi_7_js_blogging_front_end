@@ -9,6 +9,24 @@ var trace = function(){
 
 var App = App || {};
 
+App.createCategory = function(event){
+  if(event.preventDefault) event.preventDefault();
+  $.ajax({
+    url:"http://localhost:3000/categories",
+    type: 'POST',
+    dataType: 'JSON',
+    data: {
+      name: $('#category').val(),
+    },
+    headers: {'AUTHORIZATION': '4d4bcfb81b4247bdbd9649cc39c936d5'}
+  }).done(function(data){
+      trace(data);
+  }).fail(function(jqXHR, textStatus, errorThrown){
+      trace(jqXHR, textStatus, errorThrown);
+  });
+};
+
+
 App.submitUser = function(event, form){
   if(event.preventDefault) event.preventDefault();
   $.ajax({
@@ -51,14 +69,10 @@ App.submitPost = function(event){
     headers: {'AUTHORIZATION': '4d4bcfb81b4247bdbd9649cc39c936d5'}
   }).done(function(data){
       trace(data);
-      App.showPosts();
+      App.showAllPosts();
   }).fail(function(jqXHR, textStatus, errorThrown){
       trace(jqXHR, textStatus, errorThrown);
   });
-};
-
-App.showPosts = function(results){
-  $('.posts').append('<article>' + results[0].title + '<br>' + results[0].body + '</article>');
 };
 
 App.getPosts = function(){
@@ -68,11 +82,41 @@ App.getPosts = function(){
     dataType: 'JSON'
   })
   .done(function(results) {
-    App.showPosts(results);
+    App.showAllPosts(results);
   });
 };
 
+App.showAllPosts = function(results){
+  for (var i = 0; i < results.length; i++){
+    $('.posts').append('<article>' + results[i].title + '<br>' + results[i].body + '</article>');
+    $('.posts').append('<br>');
+  }
+};
+
+App.showOnePost = function(results){
+  $('.posts').append('<article>' + results[0].title + '<br>' + results[0].body + '</article>');
+};
+
+App.getCategories = function(results){
+  $.ajax({
+    url: 'http://localhost:3000/categories',
+    type: 'GET',
+    dataType: 'JSON'
+  })
+  .done(function(results) {
+    for (var i = 0; i < results.length; i++){
+      $('#category').append('<option value="' + results[i].name + '">' + results[i].name + '</option');
+    }
+  });
+};
+
+// <select id="category" name="category">
+// <option value="">Select Category</option>
+// </select>
+
 App.init = function() {
+  App.getCategories();
+
   App.getPosts();
 
   var $userForm = $('form#user-form');
@@ -90,7 +134,6 @@ App.init = function() {
 $(document).ready(function(){
   App.init();
   trace('hello world');
-  //$('.posts').append('Something');
 });
 
 
