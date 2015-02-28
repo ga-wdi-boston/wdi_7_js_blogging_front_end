@@ -145,7 +145,7 @@ App.getAllCategories = function(){
 App.toggleCategory = function(category) {
   var $categoriesHide = $('.posts div:not([data-categories*=' + category + '])');
   var $categoriesDisplay = $('[data-categories*=' + category + ']');
-    debugger
+
   $categoriesHide.hide();
   $categoriesDisplay.show();
 }
@@ -166,11 +166,18 @@ $(document).ready(function(){
     App.submitPost(event);
   });
 
-  var $categoryButtons = $('[type=button].category');
-  $categoryButtons.on('click', function(){
-    trace('clicked');
-    App.toggleCategory(this.id);
-  });
+  setTimeout(function(){
+    var $categoryButtons = $('[type=button].category');
+    $categoryButtons.on('click', function(){
+      App.toggleCategory(this.id);
+    });
+    var $allPosts = $('.post');
+    $('[value="Show All"]').on('click', function(){
+      $allPosts.show();
+    });
+  },2000);
+
+
 
 });
 
