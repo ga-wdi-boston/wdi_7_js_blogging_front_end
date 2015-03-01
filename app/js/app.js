@@ -11,12 +11,11 @@ var trace = function(){
 var App = (function(){
   var categoriesData;
   var usersData;
+  var postsData;
 
   var init = function() {
     getCategories();
-    setCategoriesData();
-    getPostData();
-    setUsersData();
+    getPostsData();
     var $userForm = $('form#user-form');
     $userForm.on('submit',function(e){
     submitUser(e);
@@ -25,9 +24,13 @@ var App = (function(){
     $categoryForm.on('submit',function(e){
     submitCategory(e);
     });
-    var $removeForm = $('form#remove-form');
-    $removeForm.on('submit',function(e){
+    var $removeCategoryForm = $('form#remove-category-form');
+    $removeCategoryForm.on('submit',function(e){
     removeCategory(e);
+    });
+    var $removePostForm = $('form#remove-post-form');
+    $removePostForm.on('submit',function(e){
+    removePost(e);
     });
     var $postForm = $('form#new-post-form');
     $postForm.on('submit', function(e){
@@ -39,16 +42,11 @@ var App = (function(){
     categoriesData = input;
   };
 
-  var setUsersData = function(input){
-    usersData = input;
-  };
-
   var getCategories = function(){
     $.ajax({
     url: 'http://localhost:3000/categories',
     type: 'GET',
     }).done(function(categoriesData){
-   // checkedPostCategories(categoriesData);
     setCategoriesData(categoriesData);
     showAllCategories(categoriesData);
     }).fail(function(jqXHR, textStatus, errorThrown){
@@ -71,27 +69,11 @@ var App = (function(){
     }).done(function(categoryData){
       $('#category-name').val('');
       getCategories();
-     // trace(categoryData);
     }).fail(function(jqXHR, textStatus, errorThrown){
         trace(jqXHR, textStatus, errorThrown);
     });
   };
 
-  var removeCategory = function(e){
-    debugger;
-    if(e.preventDefault) e.preventDefault();
-    $.ajax({
-      url: 'http://localhost:3000/categories/'+ $('#delete-category').val(),
-      type: 'DELETE',
-      headers: {'AUTHORIZATION': '015b0bb0383046f5ae3d2ee213fd14cc'}
-    }).done(function(categoryData){
-      $('#delete-category').prop('selectedIndex', 0);
-     // trace(categoryData);
-     getCategories();
-    }).fail(function(jqXHR, textStatus, errorThrown){
-        trace(jqXHR, textStatus, errorThrown);
-    });
-  };
 
   var showAllCategories = function(categoriesData){
       for(var i = 0; i < categoriesData.length; i++){
@@ -114,36 +96,37 @@ var App = (function(){
     });
   };
 
-  var getPostData = function(){
+  var removeCategory = function(e){
+    if(e.preventDefault) e.preventDefault();
     $.ajax({
-      url: 'http://localhost:3000/users',
-      type: 'GET',
-    }).done(function(usersData){
-     //trace(userData);
-     setUsersData(usersData);
-     App.showAllPosts(usersData);
+      url: 'http://localhost:3000/categories/'+ $('#delete-category').val(),
+      type: 'DELETE',
+      headers: {'AUTHORIZATION': '015b0bb0383046f5ae3d2ee213fd14cc'}
+    }).done(function(categoryData){
+      $('#delete-category').prop('selectedIndex', 0);
+     // trace(categoryData);
+     getCategories();
     }).fail(function(jqXHR, textStatus, errorThrown){
-      trace(jqXHR, textStatus, errorThrown);
+        trace(jqXHR, textStatus, errorThrown);
     });
   };
 
-  var showAllPosts = function(usersData){
-    for(var i = 0; i < usersData.length; i++){
-       // debugger;
-        App.showUserPosts(usersData[i].posts);
-      };
+  var setPostsData = function(input){
+    postsData = input;
   };
 
-  var showUserPosts = function(postData){
-   // debugger;
-    for(var i = 0; i < postData.length; i++){
-      $('#posts').append('<li>' + postData[i].body + '</li>' + postData[i].categoriesData) };
-  };
-
-  var showPostsCategories = function(postCategories){
-   // debugger;
-    for(var i = 0; i < postCategories.length; i++){
-      $('#posts').append('<li>' + postCategories[i].body + '</li>' + postCategories[i]) };
+  var getPostsData = function(){
+    $.ajax({
+      url: 'http://localhost:3000/posts',
+      type: 'GET',
+    }).done(function(postsData){
+     //trace(userData);
+     debugger;
+     setPostsData(postsData);
+     showAllPosts(postsData);
+    }).fail(function(jqXHR, textStatus, errorThrown){
+      trace(jqXHR, textStatus, errorThrown);
+    });
   };
 
   var submitPost = function(e){
@@ -168,6 +151,34 @@ var App = (function(){
     });
   };
 
+  var showAllPosts = function(postsData){
+    debugger;
+    for(var i = 0; i < postsData.length; i++){
+      $('#posts').append('<li>' + postsData[i].body + '</li>');
+      $('#delete-post').append('<option value="'+postsData[i].id +'">' +postsData[i].title +'</option>');
+    };
+  };
+
+  var showPostsCategories = function(postCategories){
+    for(var i = 0; i < postCategories.length; i++){
+      $('#posts').append('<li>' + postCategories[i].body + '</li>' + postCategories[i]) };
+  };
+
+  var removePost = function(e){
+    if(e.preventDefault) e.preventDefault();
+    $.ajax({
+      url: 'http://localhost:3000/posts/'+ $('#delete-post').val(),
+      type: 'DELETE',
+      headers: {'AUTHORIZATION': '015b0bb0383046f5ae3d2ee213fd14cc'}
+    }).done(function(postsData){
+      $('#delete-post').prop('selectedIndex', 0);
+     // trace(categoryData);
+     getPostsData();
+    }).fail(function(jqXHR, textStatus, errorThrown){
+        trace(jqXHR, textStatus, errorThrown);
+    });
+  };
+
   var checkedPostCategories = function(){
     var categoryIdArr = [];
     var categoryList = $('#post-category').children();
@@ -179,6 +190,10 @@ var App = (function(){
       $('#'+ $(categoryList[i]).children().val()).prop('checked', false);
     };
     return categoryIdArr;
+  };
+
+  var setUsersData = function(input){
+    usersData = input;
   };
 
   var submitUser = function(e){
@@ -209,6 +224,12 @@ var App = (function(){
     });
   };
 
+  var showUserPosts = function(postData){
+   // debugger;
+    for(var i = 0; i < postData.length; i++){
+      $('#posts').append('<li>' + postData[i].body + '</li>' + postData[i].categoriesData) };
+  };
+
   return{
     init: init,
     submitPost:submitPost,
@@ -217,7 +238,7 @@ var App = (function(){
     showPostsCategories:showPostsCategories,
     showUserPosts:showUserPosts,
     showAllPosts:showAllPosts,
-    getPostData: getPostData,
+    getPostsData: getPostsData,
     showAllCategories:showAllCategories,
     getCategories:getCategories
     };
