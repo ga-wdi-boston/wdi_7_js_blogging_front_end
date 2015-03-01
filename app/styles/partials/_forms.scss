@@ -1,5 +1,6 @@
 div.form-group {
   display: block;
+  padding-top:10px;
 
   label {
     display: block;
@@ -24,6 +25,9 @@ div.form-group {
     margin:0;
     //display: inline;
     //width: 100%;
+  }
+  ul#post-category li {
+    padding-top: 3px;
   }
 }
 

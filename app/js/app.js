@@ -15,25 +15,24 @@ var App = (function(){
   var init = function() {
     getCategories();
     setCategoriesData();
-  //  debugger;
     getPostData();
     setUsersData();
-    var $userForm = $('form#user-form'); //children for form
-  $userForm.on('submit',function(e){//e shorthand for event
-   // submitUser(e,$userForm);
-   submitUser(e);
-  });
-
-  var $categoryForm = $('form#category-form'); //children for form
-  $categoryForm.on('submit',function(e){//e shorthand for event
+    var $userForm = $('form#user-form');
+    $userForm.on('submit',function(e){
+    submitUser(e);
+    });
+    var $categoryForm = $('form#category-form');
+    $categoryForm.on('submit',function(e){
     submitCategory(e);
-  });
-
-  var $postForm = $('form#new-post-form');
-  $postForm.on('submit', function(e){
-//debugger;
-  submitPost(e);
-  });
+    });
+    var $removeForm = $('form#remove-form');
+    $removeForm.on('submit',function(e){
+    removeCategory(e);
+    });
+    var $postForm = $('form#new-post-form');
+    $postForm.on('submit', function(e){
+    submitPost(e);
+    });
   };
 
   var setCategoriesData = function(input){
@@ -71,29 +70,45 @@ var App = (function(){
       headers: {'AUTHORIZATION': '015b0bb0383046f5ae3d2ee213fd14cc'}
     }).done(function(categoryData){
       $('#category-name').val('');
-      trace(categoryData);
+      getCategories();
+     // trace(categoryData);
+    }).fail(function(jqXHR, textStatus, errorThrown){
+        trace(jqXHR, textStatus, errorThrown);
+    });
+  };
+
+  var removeCategory = function(e){
+    debugger;
+    if(e.preventDefault) e.preventDefault();
+    $.ajax({
+      url: 'http://localhost:3000/categories/'+ $('#delete-category').val(),
+      type: 'DELETE',
+      headers: {'AUTHORIZATION': '015b0bb0383046f5ae3d2ee213fd14cc'}
+    }).done(function(categoryData){
+      $('#delete-category').prop('selectedIndex', 0);
+     // trace(categoryData);
+     getCategories();
     }).fail(function(jqXHR, textStatus, errorThrown){
         trace(jqXHR, textStatus, errorThrown);
     });
   };
 
   var showAllCategories = function(categoriesData){
-      // for(var i = 0; i < categories.length; i++){
-      //   $('#categories').append('<li>' + categories[i].name +'</li>')
-      // };
       for(var i = 0; i < categoriesData.length; i++){
       $('#post-category').append('<li><input type="checkbox" name="categories" value="' + categoriesData[i].id+'"  id="' +categoriesData[i].id + '" />' + categoriesData[i].name + '</li>' );
+
+      $('#delete-category').append('<option value="'+categoriesData[i].id +'">' +categoriesData[i].name +'</option>');
       };
     };
 
   var updateCategories = function(postID,categoryIdArr){
-    debugger;
     categoryIdArr.forEach(function(categoryId){
       $.ajax({
       url: 'http://localhost:3000/posts/' + postID + '/categories/' + categoryId,
       type: 'PATCH',
       headers: {'AUTHORIZATION': '015b0bb0383046f5ae3d2ee213fd14cc'}
       }).done(function(data){
+        getPostData();
         trace(data);
       }).fail();
     });
@@ -209,11 +224,6 @@ var App = (function(){
 })();
 
 $(document).ready(function(){
- // var currentState = App.init();
   App.init();
- // debugger;
-//Categories.checkedPostCategories();
-
 });
 
-//015b0bb0383046f5ae3d2ee213fd14cc
