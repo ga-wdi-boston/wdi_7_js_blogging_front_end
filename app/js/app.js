@@ -9,23 +9,23 @@ var trace = function(){
 
 var App = App || {};
 
-App.createCategory = function(event){
+App.createCategory = function(){
   if(event.preventDefault) event.preventDefault();
   $.ajax({
-    url:"http://localhost:3000/categories",
+    url: 'http://localhost:3000/categories',
     type: 'POST',
     dataType: 'JSON',
     data: {
-      name: $('#category').val(),
-    },
-    headers: {'AUTHORIZATION': '4d4bcfb81b4247bdbd9649cc39c936d5'}
-  }).done(function(data){
-      trace(data);
-  }).fail(function(jqXHR, textStatus, errorThrown){
-      trace(jqXHR, textStatus, errorThrown);
+      category: {
+        name: $('#new-category').val()
+      }
+    }
+  })
+  .done(function(results) {
+    App.showAllPosts();
+    console.log(results);
   });
 };
-
 
 App.submitUser = function(event, form){
   if(event.preventDefault) event.preventDefault();
@@ -86,6 +86,8 @@ App.getPosts = function(){
   });
 };
 
+
+
 App.showAllPosts = function(results){
   for (var i = 0; i < results.length; i++){
     $('.posts').append('<article>' + results[i].title + '<br>' + results[i].body + '</article>');
@@ -110,18 +112,20 @@ App.getCategories = function(results){
   });
 };
 
-// <select id="category" name="category">
-// <option value="">Select Category</option>
-// </select>
+
 
 App.init = function() {
   App.getCategories();
-
   App.getPosts();
 
   var $userForm = $('form#user-form');
   $userForm.on('submit', function(event){
     App.submitUser(event,$userForm);
+  });
+
+  var $categoryForm = $('form#new-category-form');
+  $categoryForm.on('submit', function(event){
+    App.createCategory(event,$categoryForm);
   });
 
   var $postForm = $('form#new-post-form');
