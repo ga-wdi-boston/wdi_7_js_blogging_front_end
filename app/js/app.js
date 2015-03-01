@@ -80,7 +80,6 @@ App.displayPost = function(event){
   return false;
 };
 
-
 $(document).ready(function(){
   // asking the DOM for the element with the ID of user-form
   var $userForm = $('form#user-form');
