@@ -84,6 +84,10 @@ App.displayPosts = function(event){
   };
 
 $('document').ready(function(){
+  // var $posts = $('#posts');
+  // $posts.on('load', function(event){
+    App.displayPosts(event);
+
   var $userForm = $('form#user-form');
   $userForm.on('submit', function(event){
     App.submitUser(event, $userForm);
@@ -93,12 +97,5 @@ $('document').ready(function(){
   $postForm.on('submit', function(event){
     App.submitPost(event);
   });
-
-  $('#display').click(App.displayPosts);
-
-  // var $posts = $('#posts');
-  // $posts.on('load', function(event){
-  //   App.displayPost(event);
-  // });
 });
 /*"109885dca2fc451fbca7d7795ff65355"*/
