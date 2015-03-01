@@ -80,6 +80,24 @@ App.displayPost = function(event){
   return false;
 };
 
+App.submitCategory = function(event){
+  if(event.preventDefault) event.preventDefault();
+  $.ajax({
+    url: 'http://localhost:3000/categories',
+    type: 'POST',
+    datatype: 'JSON',
+    data: {
+      category:{
+        title: $('#category-title').val()
+      }
+   },
+  }).done(function(data){
+    trace(data);
+  }).fail(function(jqXHR, textStatus, errorThrown){
+    trace(jqXHR, textStatus, errorThrown);
+  });
+  return false;
+};
 
 $(document).ready(function(){
   // asking the DOM for the element with the ID of user-form
@@ -94,6 +112,11 @@ $(document).ready(function(){
     App.submitPost(event);
   });
   trace('hello world');
+
+  var $categoryForm = $('form#new-category-form');
+  $categoryForm.on('submit', function(event){
+    App.submitCategory(event);
+  });
 
   App.displayPost(event);
 });
