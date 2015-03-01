@@ -48,38 +48,36 @@ var trace = function(){
 
 var display = function(posts){
   var postData = '';
-  for(var i = 0; i < posts.length; i++){
-    var buttonHTML = '<input type=button class=edit id=' + posts[i].id + ' value="Edit Post" >' + '<input type=button class=delete id=' + posts[i].id + ' value="Delete Post" >';
+  for(var i = 0, max = posts.length; i < max; i++){
     if(posts[i].categories.length === 0 && posts[i].images.length === 0){ // post has no categories and no pictures
-      postData += '<div id=' + i + '><p><h3>' + posts[i].title + '</h3></p>' + '<p>' + posts[i].body + '</p></div>';
+      postData += '<div id=' + posts[i].id + '><p><h3>' + posts[i].title + '</h3></p>' + '<p>' + posts[i].body + '</p></div>';
       $('#posts').html(postData);
-      $('#' + posts[i].id).append(buttonHTML);
   } else if(posts[i].categories.length === 0 && posts[i].images.length != 0){ // post has no catagories but has pictures
         for(var imageIndex = 0; imageIndex < posts[i].images.length; imageIndex++){
-          postData += '<div id=' + i + '><p><h3>' + posts[i].title + '</h3></p>' + '<p>' + posts[i].body + '<br><img src="' + posts[i].images[imageIndex].url +'</br></p></div>';
+          postData += '<div id=' + posts[i].id + '><p><h3>' + posts[i].title + '</h3></p>' + '<p>' + posts[i].body + '<br><img src="' + posts[i].images[imageIndex].url +'</br></p></div>';
           $('#posts').html(postData);
-          $('#' + posts[i].id).append(buttonHTML);
         };
       } else if(posts[i].categories.length != 0 && posts[i].images.length === 0){ // post has categories but no pictures
       for(var categoryIndex = 0; categoryIndex < posts[i].categories.length; categoryIndex++){
-        postData += '<div id=' + i + '><h3>' + posts[i].title + '</h3></p>' + '<p>' + posts[i].body + '</p></div>' + '<small>' + posts[i].categories[categoryIndex].id + " " + posts[i].categories[categoryIndex].name + " " + posts[i].categories[categoryIndex].created_at + " " + posts[i].categories[categoryIndex].updated_at + '</small>';
+        postData += '<div id=' + posts[i].id + '><h3>' + posts[i].title + '</h3></p>' + '<p>' + posts[i].body + '</p></div>' + '<small>' + posts[i].categories[categoryIndex].id + " " + posts[i].categories[categoryIndex].name + " " + posts[i].categories[categoryIndex].created_at + " " + posts[i].categories[categoryIndex].updated_at + '</small>';
         $('#posts').html(postData);
-        $('#' + posts[i].id).append(buttonHTML);
       };
   } else { //post has no categories and no images
       for(var categoryIndex = 0; categoryIndex < posts[i].categories.length; categoryIndex++){
         for(var imageIndex = 0; imageIndex < posts[i].images.length; imageIndex++){
-          postData += '<div id=' + i + '><p><h3>' + posts[i].title + '</h3></p>' + '<p>' + posts[i].body + '</p>' + '<br><img src="' + posts[i].images[imageIndex].url + '</br></div>' + '<small>' + posts[i].categories[categoryIndex].id + " " + posts[i].categories[categoryIndex].name + " " + posts[i].categories[categoryIndex].created_at + " " + posts[i].categories[categoryIndex].updated_at + '</small>';
+          postData += '<div id=' + posts[i].id + '><p><h3>' + posts[i].title + '</h3></p>' + '<p>' + posts[i].body + '</p>' + '<br><img src="' + posts[i].images[imageIndex].url + '</br></div>' + '<small>' + posts[i].categories[categoryIndex].id + " " + posts[i].categories[categoryIndex].name + " " + posts[i].categories[categoryIndex].created_at + " " + posts[i].categories[categoryIndex].updated_at + '</small>';
             $('#posts').html(postData);
-            $('#' + posts[i].id).append(buttonHTML);
         };
       };
     };
   };
 };
 
-var renderButtons = function(data){
-
+var renderButtons = function(posts){
+  for(var i = 0, max = posts.length; i < max; i++){
+  var buttonHTML = '<input type=button class=edit id=' + posts[i].id + ' value="Edit Post" >' + '<input type=button class=delete id=' + posts[i].id + ' value="Delete Post" >';
+  $('#' + posts[i].id).append(buttonHTML);
+  }
 };
 
 var buttonEventHandler = function(data){
