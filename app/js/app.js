@@ -9,6 +9,64 @@ var trace = function(){
 
 var App = App || {};
 
+App.submitUser = function(event, form) {
+  if (event.preventDefault) event.preventDefault();
+  $.ajax({
+    url: 'http://localhost:3000/users',
+    type: 'POST',
+    dataType: 'JSON',
+    data: {
+      user: {
+        username: $('#username').val(),
+        email: $('#email').val(),
+        password: $('#password').val(),
+        password_confirmation: $('#passwordconfirmation').val(),
+        role: $('#role').val(),
+        first_name: $('#firstname').val(),
+        last_name: $('#lastname').val()
+      }
+    },
+    success: function(data, textStatus, jqXHR) {
+      trace('I made a new user!');
+    },
+  }).done(function(data){
+    trace(data);
+  }).fail(function(jqXHR, textStatus, errorThrown){
+    trace(jqXHR, textStatus, errorThrown);
+  });
+};
+
+App.submitPost = function(event){
+  if(event.preventDefault) event.preventDefault();
+  $.ajax({
+    url: 'http://localhost:3000/posts',
+    type: 'POST',
+    dataType: 'JSON',
+    data: {
+      post: {
+        title: $('#post-title').val(),
+        body: $('#post-body').val()
+      }
+    },
+    headers: { 'AUTHORIZATION': 'fa2beb3f8c2d4918a848286c8add092f' },
+  }).done(function(data) {
+    trace(data);
+  }).fail(function(jqXHR, textStatus, errorThrown){
+    trace(jqXHR, textStatus, errorThrown);
+  });
+  return false;
+};
+
 $(document).ready(function(){
-  trace('hello world');
+  var $userForm = $('form#user-form');
+  $userForm.on('submit', function(e) {
+    App.submitUser(e, $userForm);
+  });
+
+  var $postForm = $('form#new-post-form');
+  $postForm.on('submit', function(event) {
+    App.submitPost(event);
+  });
+
+  console.log('hello world');
 });
