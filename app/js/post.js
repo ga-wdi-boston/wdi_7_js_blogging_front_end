@@ -16,9 +16,9 @@ App.submitPost = function ( event ) {
     },
     headers: {'AUTHORIZATION': 'c02ed61e60cb4220b421db4f52ab70b0'}
   }).done(function(jqXHR, textStatus, errorThrown) {
-    trace(jqXHR, textStatus, errorThrown);
+    console.log(jqXHR, textStatus, errorThrown);
   }).fail(function(jqXHR, textStatus, errorThrown) {
-    trace(jqXHR, textStatus, errorThrown);
+    console.log(jqXHR, textStatus, errorThrown);
   });
   return false;
 };
@@ -29,11 +29,11 @@ App.Post = function ( remotePost ) {
   this.id = remotePost.id;
 };
 
-App.Post.prototype.render = function () {
-  var html = "<div class='posts-" + this.id + "'>";
-    html += "<h3>" + this.title + "</h3>";
-    html += "<article>" + this.body + "</article>";
-    html += "</div>";
+App.Post.prototype.render = function ( remotePost ) {
+  var html = "<div class='posts-" + remotePost.id + "'>";
+    html += '<h3>' + remotePost.title + '</h3>';
+    html += '<article>' + remotePost.body + '</article>';
+    html += '</div>';
     return html;
 };
 
@@ -56,13 +56,13 @@ App.getAllPosts = function () {
 // };
 
 App.postsHandler = function ( remotePosts ) {
-  var html = "<div>"
+  var html = '<div>';
   var post;
 
   remotePosts.forEach(function(remotePost) {
     post = new App.Post(remotePost);
     html += post.render();
   });
-  html += "</div>";
+  html += '</div>';
   $('#posts').append(html);
 };

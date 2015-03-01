@@ -1,5 +1,14 @@
 /*global $:false*/
 'use strict';
+
+var App = App || {};
+
+var trace = function(){
+  for(var i = 0; i < arguments.length; i++){
+    console.log(arguments[i]);
+  }
+};
+
 $(document).ready(function() {
   var $userForm = $('form#user-form');
   $userForm.on('submit', function(event) {
@@ -12,17 +21,5 @@ $(document).ready(function() {
   });
 
 
-  trace("trace");
+  trace('trace');
 });
-
-var trace = function(){
-  for(var i = 0; i < arguments.length; i++){
-    console.log(arguments[i]);
-  }
-};
-
-var App = App || {};
-
-
-
-
