@@ -45,7 +45,7 @@ App.submitUser = function(event, form){
    });
   };
 
-App.submitPost = function(event){
+App.submitPost = function(event, form){
   if(event.preventDefault) event.preventDefault();
   $.ajax({
     url: 'http://localhost:3000/posts',
@@ -80,7 +80,7 @@ App.displayPost = function(event){
   return false;
 };
 
-App.submitCategory = function(event){
+App.submitCategory = function(event, form){
   if(event.preventDefault) event.preventDefault();
   $.ajax({
     url: 'http://localhost:3000/categories',
@@ -91,6 +91,7 @@ App.submitCategory = function(event){
         title: $('#category-title').val()
       }
    },
+   headers: { 'AUTHORIZATION': '7629d6fdca39422582e71daa921234da' }
   }).done(function(data){
     trace(data);
   }).fail(function(jqXHR, textStatus, errorThrown){
