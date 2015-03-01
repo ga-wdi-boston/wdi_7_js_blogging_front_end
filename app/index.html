@@ -30,8 +30,16 @@
         <h1>Front end to consume a Blogging API</h1>
       </header>
 
+      <div class="categories">
+      <h2> Categories</h2>
+      <ul id='categories'></ul>
+
+        <!-- <p>Placeholder content.</p> -->
+      </div>
+
       <div class="posts">
-        <p>Placeholder content.</p>
+      <ul id='posts'></ul>
+        <!-- <p>Placeholder content.</p> -->
       </div>
 
       <div class="forms">
@@ -45,6 +53,10 @@
             <div class="form-group">
               <label for="post-body">Post Body</label>
               <textarea name="post-body" id="post-body"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="post-category">Post Categories</label>
+              <ul id="post-category"></ul>
             </div>
             <div class="form-group">
               <input type="submit" id='submit' value="Create Post" />

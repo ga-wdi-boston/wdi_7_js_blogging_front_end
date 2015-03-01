@@ -15,5 +15,15 @@ div.form-group {
   textarea#post-body {
     min-height: 100px;
   }
+
+  ul#post-category {
+    list-style-type: none;
+    padding-left:0;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    margin:0;
+    //display: inline;
+    //width: 100%;
+  }
 }
 
