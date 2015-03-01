@@ -20,6 +20,8 @@ $(document).ready(function() {
     App.submitPost(event);
   });
 
+  App.PostList.get();
+
 
   trace('trace');
 });

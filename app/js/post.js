@@ -29,21 +29,41 @@ App.Post = function ( remotePost ) {
   this.id = remotePost.id;
 };
 
-App.Post.prototype.render = function ( remotePost ) {
-  var html = "<div class='posts-" + remotePost.id + "'>";
-    html += '<h3>' + remotePost.title + '</h3>';
-    html += '<article>' + remotePost.body + '</article>';
+App.Post.prototype.render = function () {
+  var html = "<div class='posts-" + this.id + "'>";
+    html += '<h3>' + this.title + '</h3>';
+    html += '<article>' + this.body + '</article>';
     html += '</div>';
     return html;
 };
 
-App.getAllPosts = function () {
-  $.ajax({
-    url: 'http://localhost:3000/posts',
-    type: 'GET',
-    dataType: 'JSON'
-  }).done(App.getAllPosts.postsHandler);
+App.PostList = {
+  get: function(){
+    $.ajax({
+      url: 'http://localhost:3000/posts',
+      dataType: 'JSON'
+    }).done(App.PostList.postsHandler);
+  },
+  postsHandler: function ( remotePosts ){
+    var html = '<div>', post;
+
+    remotePosts.forEach(function(remotePost) {
+    post = new App.Post(remotePost);
+    html += post.render();
+  });
+  html += '</div>';
+  $('#posts').append(html);
+  }
 };
+
+// attempt #1 - not quite sure why either wouldn't be working...
+// App.getAllPosts = function () {
+//   $.ajax({
+//     url: 'http://localhost:3000/posts',
+//     type: 'GET',
+//     dataType: 'JSON'
+//   }).done(App.getAllPosts.postsHandler);
+// };
 
 // App.getPost = function () {
 //   $.ajax({
@@ -55,14 +75,43 @@ App.getAllPosts = function () {
 //   })
 // };
 
-App.postsHandler = function ( remotePosts ) {
-  var html = '<div>';
-  var post;
+// App.postsHandler = function ( remotePosts ) {
+//   var html = '<div>';
+//   var post;
 
-  remotePosts.forEach(function(remotePost) {
-    post = new App.Post(remotePost);
-    html += post.render();
+//   remotePosts.forEach(function(remotePost) {
+//     post = new App.Post(remotePost);
+//     html += post.render();
+//   });
+//   html += '</div>';
+//   $('#posts').append(html);
+// };
+
+App.deletePost = function( remotePost) {
+  $.ajax({
+    url: 'http://localhost:3000/posts/' + remotePost.id,
+    type: 'DELETE',
+    dataType: 'JSON',
+  }).done(function(){
+    console.log('post deleted');
   });
-  html += '</div>';
-  $('#posts').append(html);
+  return false;
 };
+
+App.updatePost = function ( id ) {
+  $.ajax({
+    url: 'http://localhost:3000/posts/' + id,
+    type: 'PATCH',
+    dataType: 'JSON',
+    data: {
+      post: {
+        title: '',
+        body: ''
+      }
+    },
+  }).done(function(){
+    console.log('post updated');
+  });
+  return false;
+};
+
