@@ -80,7 +80,7 @@ App.displayPosts = function(event){
       display(data);
     }).fail(function(jqXHR, textStatus, errorThrown){
     });
-    return false
+    return false;
   };
 
 $('document').ready(function(){
