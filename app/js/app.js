@@ -49,6 +49,7 @@ var trace = function(){
 var display = function(posts){
   var postData = '';
   for(var i = 0, max = posts.length; i < max; i++){
+    debugger;
     if(posts[i].categories.length === 0 && posts[i].images.length === 0){ // post has no categories and no pictures
       postData += '<div id=' + posts[i].id + '><p><h3>' + posts[i].title + '</h3></p>' + '<p>' + posts[i].body + '</p></div>';
       $('#posts').html(postData);
@@ -62,7 +63,7 @@ var display = function(posts){
         postData += '<div id=' + posts[i].id + '><h3>' + posts[i].title + '</h3></p>' + '<p>' + posts[i].body + '</p></div>' + '<small>' + posts[i].categories[categoryIndex].id + " " + posts[i].categories[categoryIndex].name + " " + posts[i].categories[categoryIndex].created_at + " " + posts[i].categories[categoryIndex].updated_at + '</small>';
         $('#posts').html(postData);
       };
-  } else { //post has no categories and no images
+  } else if(posts[i].categories === 0 && posts[i].images.length === 0){ //post has no categories and no images
       for(var categoryIndex = 0; categoryIndex < posts[i].categories.length; categoryIndex++){
         for(var imageIndex = 0; imageIndex < posts[i].images.length; imageIndex++){
           postData += '<div id=' + posts[i].id + '><p><h3>' + posts[i].title + '</h3></p>' + '<p>' + posts[i].body + '</p>' + '<br><img src="' + posts[i].images[imageIndex].url + '</br></div>' + '<small>' + posts[i].categories[categoryIndex].id + " " + posts[i].categories[categoryIndex].name + " " + posts[i].categories[categoryIndex].created_at + " " + posts[i].categories[categoryIndex].updated_at + '</small>';
