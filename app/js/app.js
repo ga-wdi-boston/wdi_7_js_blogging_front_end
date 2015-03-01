@@ -8,10 +8,19 @@ var trace = function(){
 };
 
 var display = function(data){
-  var string = '';
+  var post = '';
+  var postCategories = '';
   for(var i = 0; i < data.length; i++){
-    string += '<p>' + data[i].title + '</p>' + '<p>' + data[i].body + '</p>';
-    $('#posts').html(string);
+    post += '<div id=' + i + '><p><b>' + data[i].title + '</b></p>' + '<p>' + data[i].body + '</p></div>';
+    if(data[i].categories.length != 0){
+      for (var categoryIndex = 0; categoryIndex < data[i].categories; categoryIndex++){
+        postCategories += '<footer>' + data[i].categories[categoryIndex].id + " " + data[i].categories[categoryIndex].name + " " + data[i].categories[categoryIndex].created_at + " " + data[i].categories[categoryIndex].updated_at + '</footer>';
+    }
+      $('#posts').html(post);
+      $('#posts').html(postCategories);
+    } else {
+      $('#posts').html(post);
+    };
   };
 };
 
