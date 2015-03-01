@@ -71,6 +71,26 @@ App.submitCategory = function(){
   });
 };
 
+App.getPost = function(){
+  $.ajax({
+    url: 'http://localhost:3000/posts',
+    type: 'GET',
+    dataType: 'JSON'
+  }).done(function(data){
+    console.log(data);
+  });
+};
+
+App.getCategory = function(){
+  $.ajax({
+    url: 'http://localhost:3000/categories',
+    type: 'GET',
+    dataType: 'JSON'
+  }).done(function(data){
+    console.log(data);
+  });
+};
+
 App.getUser = function(){
   $.ajax({
     url: 'http://localhost:3000/users',
@@ -95,6 +115,8 @@ $(document).ready(function(){
     App.submitCategory(event);
   });
 
+  App.getPost();
+  App.getCategory();
   App.getUser();
 
 });
