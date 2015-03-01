@@ -20,13 +20,13 @@ var display = function(data){
         for(var imageIndex = 0; imageIndex < data[i].images.length; imageIndex++){
           postData += '<div id=' + i + '><p><b>' + data[i].title + '</b></p>' + '<p>' + data[i].body + '</p>' + '<img src="' + data[i].images[imageIndex].url + '</div>' + '<small>' + data[i].categories[categoryIndex].id + " " + data[i].categories[categoryIndex].name + " " + data[i].categories[categoryIndex].created_at + " " + data[i].categories[categoryIndex].updated_at + '</small>';
             $('#posts').html(postData);
-      };
-    } else if(data[i].catagories.length === 0 && data[i].images.length != 0){
+          };
+        };
+    } else if(data[i].categories.length === 0 && data[i].images.length != 0){
         for(var imageIndex = 0; imageIndex < data[i].images.length; imageIndex++){
           postData += '<div id=' + i + '><p><b>' + data[i].title + '</b></p>' + '<p>' + data[i].body + '<img src="' + data[i].images[imageIndex].url +'</p></div>';
           $('#posts').html(postData);
-        }
-      };
+        };
   } else { //post has no categories and no images
       postData += '<div id=' + i + '><p><b>' + data[i].title + '</b></p>' + '<p>' + data[i].body + '</p></div>';
       $('#posts').html(postData);
