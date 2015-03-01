@@ -28,12 +28,12 @@ App.Posts.viewOnePost = function(id){
 };
 
 
-App.Posts.Post= function(id, title, body, created, categories){
-  this.id = id;
-  this.title = title;
-  this.body = body;
-  this.created_at = created;
-  this.categories = categories
+App.Posts.Post= function(post){
+  this.id = post.id;
+  this.title = post.title;
+  this.body = post.body;
+  this.created_at = post.created;
+  this.categories = post.categories
 };
 
 
@@ -44,6 +44,35 @@ App.Posts.addPost = function(post){
   App.Posts.$posts.prepend($newPostHTML);
 };
 
+
+// not working yet, but we will see.
+// App.Posts.deletePost = function(id){
+//   $.ajax({
+//     url: 'http://localhost:3000/posts/' + parseInt(id),
+//     type: 'DELETE',
+//     dataType: 'JSON',
+//     headers: {'AUTHORIZATION':'50a82b94c0a34e3fa66044e3c269dd18'}
+//   }).done(function(data){
+//     trace(data)
+//     ('post/'+ id).remove();
+//   }).fail(function(jqXHR, textStatus, errorThrown){
+//     trace(jqXHR, textStatus, errorThrown);
+//   });
+// };
+
+
+App.Posts.addCategoriesToPost = function(post, categories){
+
+  categories.forEach(function(category){
+    $.ajax({
+    url: 'http://localhost:3000/posts/' + post.id + '/categories/' + category,
+    type: 'PATCH',
+    headers: {'AUTHORIZATION': '50a82b94c0a34e3fa66044e3c269dd18'},
+    }).done(function(data){
+
+    }).fail();
+  })
+};
 
 
 App.Posts.submitPost = function(event){
