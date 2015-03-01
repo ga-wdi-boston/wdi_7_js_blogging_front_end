@@ -36,6 +36,26 @@ App.submitUser = function(event, form){
   });
 }
 
+App.addCategory = function(event){
+  if(event.preventDefault) event.preventDefault();
+  $.ajax({
+    url: 'http://localhost:3000/posts/:post_id/categories/:id',
+    type: 'PATCH',
+    dataType: 'JSON',
+    data: {
+      post: {
+        categories: $('#post-category').val()
+      }
+    },
+    headers: { 'AUTHORIZATION': '3993a861c060430b82c24f9b6c8fd7d8' },
+  }).done(function(data){
+    trace(data);
+    debugger
+  }).fail(function(jqXHR, textStatus, errorThrown){
+    trace(jqXHR, textStatus, errorThrown);
+  });
+}
+
 App.submitPost = function(event){
   if(event.preventDefault) event.preventDefault();
   $.ajax({
@@ -45,12 +65,15 @@ App.submitPost = function(event){
     data: {
       post: {
         title: $('#post-title').val(),
-        body: $('#post-body').val()
+        body: $('#post-body').val(),
+        categories: $('#post-category').val()
       }
     },
     headers: { 'AUTHORIZATION': '3993a861c060430b82c24f9b6c8fd7d8' },
   }).done(function(data){
     trace(data);
+    data.categories.name.push(App.addCategory());
+    debugger
   }).fail(function(jqXHR, textStatus, errorThrown){
     trace(jqXHR, textStatus, errorThrown);
   });
@@ -65,12 +88,18 @@ App.showPosts = function(event){
     trace('success');
     trace(data);
     for (var i = 0; i < data.length; i++) {
-      var post = "<div id='post-" + data[i].id + "'>";
-      post += "<h3>" + data[i].title + "</h3>";
-      post += "<p>" + data[i].body + "</p>";
-      post += "</div>";
-      $('.posts').append(post);
-    };
+      var html = "<div id='post-" + data[i].id + "'>";
+      html += "<h3>" + data[i].title + "</h3>";
+      html += "<p>" + data[i].body + "</p>";
+      html += "<h4>Categories:</h4>";
+      if (data[i].categories.length > 0){
+        data[i].categories.forEach(function(category){
+          html += "<article>" + category.name + "</article>";
+        });
+      }
+      html += "</div>";
+      $('.posts').append(html);
+    }
   }).fail(function(jqXHR, textStatus, errorThrown){
     trace(jqXHR, textStatus, errorThrown);
   });
@@ -84,6 +113,7 @@ $(document).ready(function(){
 
   var $postForm = $('form#new-post-form');
   $postForm.on('submit', function(event){
+    App.addCategory(event);
     App.submitPost(event);
   });
 
