@@ -4,7 +4,7 @@ var User = User || {};
 
 User.showUsers = function(data){
   $.ajax({
-    url: 'http://localhost:9000/users.html',
+    url: 'http://localhost:3000/users',
     type: 'GET',
     dataType: 'JSON',
   }).done(function(data){
@@ -13,7 +13,7 @@ User.showUsers = function(data){
   }).fail();
 };
 
-$(document).ready(function(){
+
   User.usersHTML = function(user){
   $('#users').append('<ul>');
   $('ul').append('<li>' + user.first_name + '</li>' +
@@ -31,6 +31,9 @@ User.usersCallbackHandler = function(users){
   }
 };
 
+
+$(document).ready(function(){
+  User.showUsers();
 });
 
 

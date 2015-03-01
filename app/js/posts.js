@@ -4,7 +4,7 @@ var Post = Post || {};
 
 Post.getPosts = function(){
   $.ajax({
-    url: "'http://localhost:9000/",
+    url: "'http://localhost:3000/posts",
     type: "GET",
     dataType: 'json'
 
@@ -13,9 +13,16 @@ Post.getPosts = function(){
 
 
 Post.postCallbackHandler = function(posts){
-var postsHTML = '';
-for(var i = 0; i < posts.length; i++){
-
-}
-
+  var postsHTML = '';
+  for(var i = 0; i < posts.length; i++){
+    postsHTML += '<li>' + posts[i].title +
+                          posts[i].body;
+    postsHTML += '</li>';
+  }
+  console.log(posts);
+  $('.posts').append(postsHTML);
 };
+
+$(document).ready(function(){
+  Post.getPosts();
+});
