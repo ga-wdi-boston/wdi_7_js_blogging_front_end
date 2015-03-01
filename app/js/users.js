@@ -9,52 +9,54 @@ var trace = function(){
 
 var App = App || {};
 
-App.submitUser = function(event, form) {
+App.ajaxFail = function(jqXHR, textStatus, errorThrown) {
+    trace(jqXHR, textStatus, errorThrown);
+};
+
+var postNewUser = {
+    url: 'http://localhost:3000/users',
+    type: 'POST',
+    dataType: 'JSON',
+    data: {
+        user: {
+            username: $('#username').val(),
+            email: $('#email').val(),
+            password: $('#password').val(),
+            password_confirmation: $('#passwordconfirmation').val(),
+            role: $('#role').val(),
+            first_name: $('#firstname').val(),
+            last_name: $('#lastname').val()
+        }
+    }
+};
+
+App.submitUser = function(event) {
     event.preventDefault();
-    $.ajax({
-        url: 'http://localhost:3000/users',
-        type: 'POST',
-        dataType: 'JSON',
-        data: {
-            user: {
-                username: $('#username').val(),
-                email: $('#email').val(),
-                password: $('#password').val(),
-                password_confirmation: $('#passwordconfirmation').val(),
-                role: $('#role').val(),
-                first_name: $('#firstname').val(),
-                last_name: $('#lastname').val()
-            }
-        },
-        success: function(data, textStatus, jqXHR) {
-            trace('I made a new user!!!!', data, textStatus, jqXHR);
-        },
-    }).done(function(data) {
-        trace(data);//use this return info for posts
-        // token: "5a678dab498949ce80ffa717efe70033"
-    }).fail(function(jqXHR, textStatus, errorThrown) {
-        trace(jqXHR, textStatus, errorThrown);
-    });
+    $.ajax(postNewUser).done(function(data, textStatus, jqXHR) {
+        trace('I made a new user!!!!', data, textStatus, jqXHR);
+        App.getUsers();
+    }).fail(App.ajaxFail);
+};
+
+App.createUserHTML = function(user) {
+    var userHTML =  '<li>' +
+                        '<h3>username:<a href="http://localhost:9000/users/' + user.id + '.html" id="users/' + user.id + '">' + user.username + '</a></h3>' +
+                        '<p>role: ' + user.role + ', posts: ' + user.posts.length + '</p>' +
+                    '</li>';
+    $('ul#users').append(userHTML);
+};
+
+App.renderUsers = function(users) {
+    users.forEach(App.createUserHTML);
 };
 
 App.getUsers = function() {
-    $.ajax({
-        url: 'http://localhost:3000/users',
-        type: 'GET',
-        dataType: 'json'
-    })
-    .done(function(data) {
-        data.forEach(function(user) {
-            $('ul#users').append('<li>' + user.first_name + '</li>');
-        });
-        console.table(data);
-    });
+    $.get('http://localhost:3000/users', App.renderUsers, 'json')
+    .fail(App.ajaxFail);
 };
 
 $(document).ready(function() {
     $('form#user-form').on('submit', App.submitUser);
-
     App.getUsers();
-
-  trace('hello world');
+    trace('hello world');
 });
