@@ -3,6 +3,31 @@
 
 var App = App || {};
 
+App.Post = function(remotePost){
+  this.title = remotePost.title;
+  this.body = remotePost.body;
+};
+
+App.Post.prototype.render = function(){
+  var html = "<h2>" + this.title + "</h2>";
+  html += "<p>" + this.body + "</p>";
+  return html;
+};
+
+App.postHandler = function(remotePosts){
+  var html = "<ul>", post;
+
+  remotePosts.forEach(function(remotePost){
+    post = new App.Post(remotePost);
+    html += post.render();
+  })
+
+  html += "</ul>";
+  $('.posts').append(html);
+};
+
+// POST requests-----------------------------------------------------
+
 App.submitPost = function(){
   if(event.preventDefault) event.preventDefault();
   $.ajax({
@@ -71,6 +96,8 @@ App.submitCategory = function(){
   });
 };
 
+// GET requests------------------------------------------------------
+
 App.getPost = function(){
   $.ajax({
     url: 'http://localhost:3000/posts',
@@ -78,6 +105,7 @@ App.getPost = function(){
     dataType: 'JSON'
   }).done(function(data){
     console.log(data);
+    App.postHandler(data);
   });
 };
 
@@ -101,6 +129,8 @@ App.getUser = function(){
   });
 };
 
+// Doc ready-----------------------------------------------------------
+
 $(document).ready(function(){
   var $userForm = $('form#user-form');
   $userForm.on('submit', function(e){
@@ -120,5 +150,3 @@ $(document).ready(function(){
   App.getUser();
 
 });
-
-// "6e9bd12942634ffd8463a6e3e8647a30"
