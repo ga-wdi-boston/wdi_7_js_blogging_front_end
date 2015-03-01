@@ -26,6 +26,8 @@ By the end of this, students should be able to:
 - Run `rails s` to run the `JWApi` in a localhost
 - Use this `curl` request to make sure the api is working properly: `curl -I http://localhost:3000/users`
 
+# category crud actions
+#
 ## Bonus (Optional Section)
 
 ### Much bonus goes to anyone who implements AWS hosting for images on posts
