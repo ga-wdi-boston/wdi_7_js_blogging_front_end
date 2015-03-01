@@ -39,8 +39,8 @@ App.submitUser = function(event, form){
 App.addCategory = function(event){
   if(event.preventDefault) event.preventDefault();
   $.ajax({
-    url: 'http://localhost:3000/posts/:post_id/categories/:id',
-    type: 'PATCH',
+    url: 'http://localhost:3000/posts',
+    type: 'POST',
     dataType: 'JSON',
     data: {
       post: {
@@ -53,6 +53,7 @@ App.addCategory = function(event){
     debugger
   }).fail(function(jqXHR, textStatus, errorThrown){
     trace(jqXHR, textStatus, errorThrown);
+    debugger // this is currently failing
   });
 }
 
@@ -66,13 +67,13 @@ App.submitPost = function(event){
       post: {
         title: $('#post-title').val(),
         body: $('#post-body').val(),
-        categories: $('#post-category').val()
+        //categories: $('#post-category').val()
       }
     },
     headers: { 'AUTHORIZATION': '3993a861c060430b82c24f9b6c8fd7d8' },
   }).done(function(data){
     trace(data);
-    data.categories.name.push(App.addCategory());
+    data.categories.push(App.addCategory(data));
     debugger
   }).fail(function(jqXHR, textStatus, errorThrown){
     trace(jqXHR, textStatus, errorThrown);
