@@ -31,61 +31,25 @@ App.Post = function ( remotePost ) {
 
 App.Post.prototype.render = function () {
   var html = "<div class='posts-" + this.id + "'>";
-    html += '<h3>' + this.title + '</h3>';
-    html += '<article>' + this.body + '</article>';
-    html += '</div>';
-    return html;
+  html += '<h3>' + this.title + '</h3>';
+  html += '<article>' + this.body + '</article>';
+  html += '</div>';
+  return html;
 };
 
 App.PostList = {
-  get: function(){
+  get: function() {
     $.ajax({
       url: 'http://localhost:3000/posts',
       dataType: 'JSON'
-    }).done(App.PostList.postsHandler);
+    }).then(App.PostList.postsHandler);
   },
-  postsHandler: function ( remotePosts ){
-    var html = '<div>', post;
-
-    remotePosts.forEach(function(remotePost) {
-    post = new App.Post(remotePost);
-    html += post.render();
-  });
-  html += '</div>';
-  $('#posts').append(html);
+  postsHandler: function ( remotePosts ) {
+    $('.posts').append(remotePosts.map( function renderPost( post ) {
+      return new App.Post( post ).render();
+    }).join(''));
   }
 };
-
-// attempt #1 - not quite sure why either wouldn't be working...
-// App.getAllPosts = function () {
-//   $.ajax({
-//     url: 'http://localhost:3000/posts',
-//     type: 'GET',
-//     dataType: 'JSON'
-//   }).done(App.getAllPosts.postsHandler);
-// };
-
-// App.getPost = function () {
-//   $.ajax({
-//     url: 'http://localhost:3000/posts' + id,
-//     type: 'GET',
-//     dataType: 'JSON'
-//   }).done(function(data){
-//     console.log(data);
-//   })
-// };
-
-// App.postsHandler = function ( remotePosts ) {
-//   var html = '<div>';
-//   var post;
-
-//   remotePosts.forEach(function(remotePost) {
-//     post = new App.Post(remotePost);
-//     html += post.render();
-//   });
-//   html += '</div>';
-//   $('#posts').append(html);
-// };
 
 App.deletePost = function( remotePost) {
   $.ajax({

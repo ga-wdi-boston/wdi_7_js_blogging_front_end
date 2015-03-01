@@ -22,9 +22,9 @@ App.submitUser = function ( event, form ) {
     success: function ( data, textStatus, jqXHR ) {
       console.log(data, textStatus, jqXHR);
     },
-  }).done(function(data) {
+  }).then(function(data) {
     console.log(data);
-  }).fail(function(jqXHR, textStatus, errorThrown) {
+  }, function(jqXHR, textStatus, errorThrown) {
     console.log(jqXHR, textStatus, errorThrown);
   });
   return false;
