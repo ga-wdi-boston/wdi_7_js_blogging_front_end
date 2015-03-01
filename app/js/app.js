@@ -47,8 +47,9 @@ App.submitPost = function(event){
     data: {
       post: {
         title: $('#post-title').val(),
-        body: $('#post-body').val()
-      }
+        body: $('#post-body').val(),
+        categories: [$('#post-category').val()]
+        },
     },
     headers: {'AUTHORIZATION': 'b254f0ae13c04cff89f80092b9664908'},
   }).done(function(data){
@@ -57,6 +58,26 @@ App.submitPost = function(event){
     trace(jqXHR, textStatus, errorThrown);
   });
   return false;
+};
+
+App.submitCategory = function(event){
+  event.preventDefault();
+ $.ajax({
+    url: 'http://localhost:3000/categories',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      category: {
+        name: $('#category-name').val(),
+      }
+    }
+  })
+  .done(function() {
+    console.log("success");
+  })
+  .fail(function() {
+    console.log("error");
+  });
 };
 
 App.getAllUsers = function(){
@@ -77,7 +98,7 @@ App.getAllUsers = function(){
 App.listAllUsers = function(users){
   for (var i = 0; i < users.length; i++) {
     App.showUser(users[i]);
-  };
+  }
 };
 
 App.showUser = function(user){
@@ -86,6 +107,25 @@ App.showUser = function(user){
   html += '<p>' + user.about + '</p>';
   html += '<p>' + user.email + '</p>';
   $('.users').append(html);
+};
+
+App.findUser = function(){
+ $.ajax({
+   url: 'http://localhost:3000/users',
+   type: 'GET',
+   dataType: 'JSON',
+ })
+ .done(function(data) {
+   trace(data);
+ })
+ .fail(function() {
+   trace("error");
+ });
+
+};
+
+App.editUser = function(){
+
 };
 
 App.getAllPosts = function(){
@@ -118,6 +158,34 @@ App.showPost = function(post){
   $('.posts').append(html);
 };
 
+App.getAllCategories = function(){
+  $.ajax({
+    url: 'http://localhost:3000/categories',
+    type: 'GET',
+    dataType: 'JSON',
+  })
+  .done(function(data) {
+    console.log("success");
+    App.listAllCategories(data);
+  })
+  .fail(function() {
+    console.log("error");
+  });
+};
+
+App.listAllCategories = function(categories){
+  for (var i = 0; i < categories.length; i++) {
+    App.showCategory(categories[i]);
+  }
+};
+
+App.showCategory = function(category){
+  var html = '';
+  html += '<p>' + category.name + '</p>';
+  $('.categories').append(html);
+};
+
+
 $(document).ready(function(){
   var $userForm = $('form#user-form');
   $userForm.on('submit', function(event){
@@ -128,10 +196,18 @@ $(document).ready(function(){
     App.submitPost(event);
   });
 
-  App.getAllPosts();
-  App.getAllUsers();
+  var $categoryForm = $('form#new-category-form');
+  $categoryForm.on('submit', function(event){
+    App.submitCategory(event);
+  });
 
-  $('form#new-post-form').on('submit', App.getAllPosts);
+  var $findUserForm = $('form#findUser-form');
+  $findUserForm.on('submit', function(event) { App.findUser(event);
+  });
+  // App.getAllPosts();
+  // App.getAllUsers();
+
+  // $('form#new-post-form').on('submit', App.getAllPosts);
 
   trace('Hello World');
 });
