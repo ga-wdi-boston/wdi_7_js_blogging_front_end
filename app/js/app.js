@@ -20,7 +20,7 @@ App.submitUser = function(event, form){
         username: $('#username').val(),
         email: $('#email').val(),
         password: $('#password').val(),
-        password_confirmation: $('#passwordconfirmation').val(),
+        password_confirmation: $('`#passwordconfirmation').val(),
         role: $('#role').val(),
         first_name: $('#firstname').val(),
         last_name: $('#lastname').val()
@@ -57,7 +57,6 @@ App.submitPost = function(event){
   });
   return false;
 };
-// single if statement on a single line then you can use this syntax and not use {}
 
 $(document).ready(function(){
   // asking the DOM for the element with the ID of user-form
@@ -72,4 +71,19 @@ $(document).ready(function(){
     App.submitPost(event);
   });
   trace('hello world');
+
+  App._get_all_posts = function(){
+  $.ajax({
+    url: 'http://localhost:3000/posts',
+    type: 'GET'
+    })
+ .done(function(get_all_posts){
+    trace(data);
+  }).fail(function(jqXHR, textStatus, errorThrown){
+    trace(jqXHR, textStatus, errorThrown);
+   });
+  };
+  App.append()
 });
+
+
