@@ -40,10 +40,11 @@ App.submitUser = function(event) {
 
 App.createUserHTML = function(user) {
     var userHTML =  '<li>' +
-                        '<h3>username:<a href="http://localhost:9000/users/' + user.id + '.html" id="users/' + user.id + '">' + user.username + '</a></h3>' +
+                        '<h3>username:<a href="http://localhost:9000/users.html" id="' + user.id + '">' + user.username + '</a></h3>' +
                         '<p>role: ' + user.role + ', posts: ' + user.posts.length + '</p>' +
                     '</li>';
     $('ul#users').append(userHTML);
+    $('a#' + user.id).on('click', App.getUser.bind(user));
 };
 
 App.renderUsers = function(users) {
@@ -52,6 +53,17 @@ App.renderUsers = function(users) {
 
 App.getUsers = function() {
     $.get('http://localhost:3000/users', App.renderUsers, 'json')
+    .fail(App.ajaxFail);
+};
+
+App.renderUser = function(user) {
+    // add code to create HTML and display user
+    trace('Success!', user);
+};
+
+App.getUser = function(event) {
+    event.preventDefault();
+    $.get('http://localhost:3000/users/' + this.id, App.renderUser, 'json')
     .fail(App.ajaxFail);
 };
 
