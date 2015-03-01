@@ -61,28 +61,28 @@ App.submitPost = function(event){
     },
     headers: {'AUTHORIZATION': '995c3568de8549b687dede7c6a96eb75'},
   }).done(function(post){
-
     App.addOnePost(post);
     App.addCategoriesToPost(post, categories);
-
     $('.post#' + post.id).attr("data-categories", categories.join(' '));
     $('#new-post-form .clear-me').val('');
-
+    $('input:checkbox').attr('checked',false);
+    App.setPostButtonHandlers;
   }).fail(function(jqXHR, textStatus, errorThrown){
     trace(jqXHR, textStatus, errorThrown);
   });
 };
 
 App.editPost = function(post){
+
   var $editButtons = $('.edit');
       $editButtons.unbind();
 
   //select text and grab value
-  var postID = parseInt(post)
+  var postID = parseInt(post);
   var $newTitle, $newBody;
-  var $title = $('#' + post + ' h3').text();
-  var $body = $('#' + post + ' p').text();
-  var $post = $('.post#' + post);
+  var $title = $('#'+ post + '.post h3').text();
+  var $body = $('#'+ post + '.post :not(h3)').text();
+  var $post = $('#'+ post + '.post');
   var originalHTML = $post.html();
 
   $post.html('<div class="post-form"><form id="edit-post-form"><div class="form-group"><input name="post-title" type="text" value="'+ $title +'" id=' + postID + ' class="clear-me" /></div><div class="form-group"><label for="post-body">Post Body</label><textarea name="post-body"  id="post-body"></textarea></div><div class="form-group"><input type="button" id="save" value="Save Post" /><input type="button" id="cancel" value="Cancel" /></div></form></div>');
@@ -91,7 +91,7 @@ App.editPost = function(post){
   var $saveButton = $('#save');
       $saveButton.on('click', function(){
         $newTitle = $('[name=post-title]').val();
-        $newBody = $('[name=post-body]').val()
+        $newBody = $('[name=post-body]').val();
         $.ajax({
           url: 'http://localhost:3000/posts/' + postID,
           type: 'PATCH',
@@ -131,7 +131,7 @@ App.addCategoriesToPost = function(post, categories){
     }).done(function(data){
 
     }).fail();
-  })
+  });
 };
 
 App.deletePost = function(id){
@@ -141,7 +141,7 @@ App.deletePost = function(id){
     type: 'DELETE',
     headers: {'AUTHORIZATION': '995c3568de8549b687dede7c6a96eb75'},
   }).done(function(data){
-    trace(data)
+    trace(data);
     $('.post#'+ parseInt(id)).remove();
   }).fail(function(jqXHR, textStatus, errorThrown){
     trace(jqXHR, textStatus, errorThrown);
@@ -163,7 +163,6 @@ App.addOnePost = function(post){
   var $newPostHTML = $('<div class=post id='+ post.id + ' data-categories="' + catString + '">');
   $newPostHTML.html('<h3>' + post.title + '</h3>' + '<p>' + post.body + '</p>' + '<input type=button class=edit id=' + post.id + ' value="Edit Post" >' + '<input type=button class=delete id=' + post.id + ' value="Delete Post" >');
   App.$posts.prepend($newPostHTML);
-  App.setPostButtonHandlers();
 };
 
 App.setPostButtonHandlers = function(){
@@ -185,15 +184,22 @@ App.getAllPosts = function(){
   })
   .done(function(data){
     data.reverse().forEach(App.addOnePost);
+    App.setPostButtonHandlers();
 
-  })
+  });
 };
 
 App.submitCategory = function(){
+
+
     var $allPosts = $('.post');
 
     var newCategory = prompt('Enter a new category:');
-    if (typeof newCategory !== 'string') return false;
+
+    if (typeof newCategory !== 'string') {
+      $allPosts.show();
+      return false;
+    }
 
     $.ajax({
     url: 'http://localhost:3000/categories/',
@@ -216,6 +222,7 @@ App.submitCategory = function(){
     trace(jqXHR, textStatus, errorThrown);
     $allPosts.show();
   });
+
 };
 
 App.Category = function(id, name) {
@@ -226,7 +233,7 @@ App.Category = function(id, name) {
 App.addOneCategory = function(category){
   var newCategory = new App.Category(category.id, category.name);
   var $newCategoryHTML = $('<input type="checkbox" name="category" class="clear-me" value="' + category.id + '"> ' + category.name + '<br>');
-  var $newCategoryButton = $('<input type="button" class="category" id=' + category.id + ' value=' + category.name + '></input>')
+  var $newCategoryButton = $('<input type="button" class="category" id=' + category.id + ' value=' + category.name + '></input>');
   App.$categories.append($newCategoryHTML);
   App.$categoryButtons.append($newCategoryButton);
 };
@@ -250,7 +257,7 @@ App.toggleCategory = function(category) {
 
   $categoriesHide.hide();
   $categoriesDisplay.show();
-}
+};
 
 
 App.setCategoryButtons = function(){
@@ -264,6 +271,8 @@ App.setCategoryButtons = function(){
       $allPosts.show();
     });
 };
+
+
 
 
 
@@ -283,8 +292,11 @@ $(document).ready(function(){
 
   var $newCategory = $('#new-category');
   $newCategory.on('click', function(){
+
     App.submitCategory();
   });
+
+
 });
 
 //user token "995c3568de8549b687dede7c6a96eb75"

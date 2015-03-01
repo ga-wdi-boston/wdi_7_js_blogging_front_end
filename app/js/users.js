@@ -46,13 +46,59 @@ App.addOneUser = function(user){
   var newUser = new App.User(user.id, user.email, user.first_name, user.last_name, user.username, user.token);
 
   var $newUserHTML = $('<div class=User id='+ newUser.id + '>');
-  $newUserHTML.html('<h3>' + newUser.username + '</h3>' + '<p>' + newUser.first_name + ' ' + newUser.last_name + '</p>' + '<input type=button class=delete id=' + newUser.id + ' value="Delete User" >');
+  $newUserHTML.html('<h3>' + newUser.username + '</h3>' + '<p>' + newUser.first_name + ' ' + newUser.last_name + '</p>' + '<input type=button class=edit id=' + newUser.id + ' value="Edit User" >' + '<input type=button class=delete id=' + newUser.id + ' value="Delete User" >');
   App.$users.prepend($newUserHTML);
-  var $deleteButton = $('#' + newUser.id + ' [type=button]' );
-      $deleteButton.on('click', function(){
-        App.deleteUser(this.id);
-      });
+  App.setUserButtonHandlers();
 };
+
+
+// App.editPost = function(post){
+//   var $editButtons = $('.edit');
+//       $editButtons.unbind();
+
+//   //select text and grab value
+//   var postID = parseInt(post)
+//   var $newTitle, $newBody;
+//   var $title = $('#' + post + ' h3').text();
+//   var $body = $('#' + post + ' p').text();
+//   var $post = $('.post#' + post);
+//   var originalHTML = $post.html();
+
+//   $post.html('<div class="post-form"><form id="edit-post-form"><div class="form-group"><input name="post-title" type="text" value="'+ $title +'" id=' + postID + ' class="clear-me" /></div><div class="form-group"><label for="post-body">Post Body</label><textarea name="post-body"  id="post-body"></textarea></div><div class="form-group"><input type="button" id="save" value="Save Post" /><input type="button" id="cancel" value="Cancel" /></div></form></div>');
+//   $('.post#' + post + ' [name=post-body]').val($body);
+
+//   var $saveButton = $('#save');
+//       $saveButton.on('click', function(){
+//         $newTitle = $('[name=post-title]').val();
+//         $newBody = $('[name=post-body]').val()
+//         $.ajax({
+//           url: 'http://localhost:3000/posts/' + postID,
+//           type: 'PATCH',
+//           data: {
+//             post: {
+//               title: $newTitle,
+//               body: $newBody,
+//             },
+//           },
+//         }).done(function(data){
+//           trace(data);
+
+//           $post.html('<h3>' + $newTitle + '</h3>' + '<p>' + $newBody + '</p>' + '<input type=button class=edit id=' + postID + ' value="Edit Post" >' + '<input type=button class=delete id=' + postID + ' value="Delete Post" >');
+
+//           App.setPostButtonHandlers();
+//         })
+//         .fail(function(jqXHR, textStatus, errorThrown){
+//           trace(jqXHR, textStatus, errorThrown);
+//         });
+//       });
+
+
+//   var $cancelButton = $('#cancel');
+//       $cancelButton.on('click', function(){
+//         $post.html(originalHTML);
+//         App.setPostButtonHandlers();
+//       });
+// };
 
 App.getAllUsers = function(){
   $.ajax({
@@ -87,6 +133,18 @@ App.deleteUser = function(id){
   }).fail(function(jqXHR, textStatus, errorThrown){
     trace(jqXHR, textStatus, errorThrown);
   });
+};
+
+App.setUserButtonHandlers = function(){
+  // var $editButtons = $('.edit');
+  //     $editButtons.on('click', function(){
+  //       App.editUser(this.id);
+  //     });
+
+  var $deleteButtons = $('.delete');
+      $deleteButtons.on('click', function(){
+        App.deleteUser(this.id);
+      });
 };
 
 
