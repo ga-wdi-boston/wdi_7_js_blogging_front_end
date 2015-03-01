@@ -12,6 +12,10 @@ section.main-content {
     @extend .grid_10;
   }
 
+  div.users {
+    @extend .grid_10;
+  }
+
   div.forms {
     @extend .grid_6;
   }

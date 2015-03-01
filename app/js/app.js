@@ -61,14 +61,64 @@ App.submitPost = function(event){
     },
     headers: {'AUTHORIZATION': '995c3568de8549b687dede7c6a96eb75'},
   }).done(function(post){
+
     App.addOnePost(post);
     App.addCategoriesToPost(post, categories);
-    $('.post#' + post.id).data("categories", categories.join(' '));
-    debugger
+
+    $('.post#' + post.id).attr("data-categories", categories.join(' '));
     $('#new-post-form .clear-me').val('');
+
   }).fail(function(jqXHR, textStatus, errorThrown){
     trace(jqXHR, textStatus, errorThrown);
   });
+};
+
+App.editPost = function(post){
+  var $editButtons = $('.edit');
+      $editButtons.unbind();
+
+  //select text and grab value
+  var postID = parseInt(post)
+  var $newTitle, $newBody;
+  var $title = $('#' + post + ' h3').text();
+  var $body = $('#' + post + ' p').text();
+  var $post = $('.post#' + post);
+  var originalHTML = $post.html();
+
+  $post.html('<div class="post-form"><form id="edit-post-form"><div class="form-group"><input name="post-title" type="text" value="'+ $title +'" id=' + postID + ' class="clear-me" /></div><div class="form-group"><label for="post-body">Post Body</label><textarea name="post-body"  id="post-body"></textarea></div><div class="form-group"><input type="button" id="save" value="Save Post" /><input type="button" id="cancel" value="Cancel" /></div></form></div>');
+  $('.post#' + post + ' [name=post-body]').val($body);
+
+  var $saveButton = $('#save');
+      $saveButton.on('click', function(){
+        $newTitle = $('[name=post-title]').val();
+        $newBody = $('[name=post-body]').val()
+        $.ajax({
+          url: 'http://localhost:3000/posts/' + postID,
+          type: 'PATCH',
+          data: {
+            post: {
+              title: $newTitle,
+              body: $newBody,
+            },
+          },
+        }).done(function(data){
+          trace(data);
+
+          $post.html('<h3>' + $newTitle + '</h3>' + '<p>' + $newBody + '</p>' + '<input type=button class=edit id=' + postID + ' value="Edit Post" >' + '<input type=button class=delete id=' + postID + ' value="Delete Post" >');
+
+          App.setPostButtonHandlers();
+        })
+        .fail(function(jqXHR, textStatus, errorThrown){
+          trace(jqXHR, textStatus, errorThrown);
+        });
+      });
+
+
+  var $cancelButton = $('#cancel');
+      $cancelButton.on('click', function(){
+        $post.html(originalHTML);
+        App.setPostButtonHandlers();
+      });
 };
 
 App.addCategoriesToPost = function(post, categories){
@@ -82,10 +132,10 @@ App.addCategoriesToPost = function(post, categories){
 
     }).fail();
   })
-
 };
 
 App.deletePost = function(id){
+
   $.ajax({
     url: 'http://localhost:3000/posts/' + parseInt(id),
     type: 'DELETE',
@@ -111,12 +161,22 @@ App.addOnePost = function(post){
   var catString = '';
   post.categories.forEach(function(cat){catString += cat.id + ' '});
   var $newPostHTML = $('<div class=post id='+ post.id + ' data-categories="' + catString + '">');
-  $newPostHTML.html('<h3>' + post.title + '</h3>' + '<p>' + post.body + '</p>' + '<input type=button class=delete id=' + post.id + ' value="Delete Post" >');
+  $newPostHTML.html('<h3>' + post.title + '</h3>' + '<p>' + post.body + '</p>' + '<input type=button class=edit id=' + post.id + ' value="Edit Post" >' + '<input type=button class=delete id=' + post.id + ' value="Delete Post" >');
   App.$posts.prepend($newPostHTML);
+  App.setPostButtonHandlers();
 };
 
+App.setPostButtonHandlers = function(){
+  var $editButtons = $('.edit');
+      $editButtons.on('click', function(){
+        App.editPost(this.id);
+      });
 
-
+  var $deleteButtons = $('.delete');
+      $deleteButtons.on('click', function(){
+        App.deletePost(this.id);
+      });
+};
 
 App.getAllPosts = function(){
   $.ajax({
@@ -125,15 +185,37 @@ App.getAllPosts = function(){
   })
   .done(function(data){
     data.reverse().forEach(App.addOnePost);
-    var $deleteButtons = $('[type=button].delete');
-      $deleteButtons.on('click', function(){
-        App.deletePost(this.id);
-      });
+
   })
 };
 
-App.submitCategory = function(event){
+App.submitCategory = function(){
+    var $allPosts = $('.post');
 
+    var newCategory = prompt('Enter a new category:');
+    if (typeof newCategory !== 'string') return false;
+
+    $.ajax({
+    url: 'http://localhost:3000/categories/',
+    type: 'POST',
+    data: {
+      category: {
+        name: newCategory
+      },
+    },
+    headers: {'AUTHORIZATION': '995c3568de8549b687dede7c6a96eb75'},
+    }).done(function(data){
+      trace(data);
+      App.addOneCategory(data);
+      App.setCategoryButtons();
+      $allPosts.show();
+
+
+
+    }).fail(function(jqXHR, textStatus, errorThrown){
+    trace(jqXHR, textStatus, errorThrown);
+    $allPosts.show();
+  });
 };
 
 App.Category = function(id, name) {
@@ -157,15 +239,8 @@ App.getAllCategories = function(){
   .done(function(data){
       data.forEach(App.addOneCategory);
 
-      var $categoryButtons = $('[type=button].category');
-      $categoryButtons.on('click', function(){
-        App.toggleCategory(this.id);
-      });
+      App.setCategoryButtons();
 
-      var $allPosts = $('.post');
-      $('[value="Show All"]').on('click', function(){
-        $allPosts.show();
-      });
     });
 };
 
@@ -176,6 +251,19 @@ App.toggleCategory = function(category) {
   $categoriesHide.hide();
   $categoriesDisplay.show();
 }
+
+
+App.setCategoryButtons = function(){
+    var $categoryButtons = $('[type=button].category');
+    $categoryButtons.on('click', function(){
+      App.toggleCategory(this.id);
+    });
+
+    var $allPosts = $('.post');
+    $('[value="Show All"]').on('click', function(){
+      $allPosts.show();
+    });
+};
 
 
 
@@ -191,6 +279,11 @@ $(document).ready(function(){
   var $postForm = $('form#new-post-form');
   $postForm.on('submit', function(event){
     App.submitPost(event);
+  });
+
+  var $newCategory = $('#new-category');
+  $newCategory.on('click', function(){
+    App.submitCategory();
   });
 });
 
