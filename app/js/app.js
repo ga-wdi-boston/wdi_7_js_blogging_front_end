@@ -7,6 +7,14 @@ var trace = function(){
   }
 };
 
+var display = function(data){
+  var string = '';
+  for(var i = 0; i < data.length; i++){
+    string += '<p>' + data[i].title + '</p>' + '<p>' + data[i].body + '</p>';
+    $('.posts').html(string);
+  };
+};
+
 var App = App || {};
 
 App.submitUser = function(event, form){
@@ -58,6 +66,21 @@ App.submitPost = function(event){
   return false;
 };
 
+App.displayPost = function(event){
+  if(event.preventDefault) event.preventDefault();
+  $.ajax({
+    url: 'http://localhost:3000/posts',
+    type: 'GET',
+  }).done(function(data){
+    trace(data);
+    display(data);
+  }).fail(function(jqXHR, textStatus, errorThrown){
+    trace(jqXHR, textStatus, errorThrown);
+  });
+  return false;
+};
+
+
 $(document).ready(function(){
   // asking the DOM for the element with the ID of user-form
   var $userForm = $('form#user-form');
@@ -72,18 +95,7 @@ $(document).ready(function(){
   });
   trace('hello world');
 
-  App._get_all_posts = function(){
-  $.ajax({
-    url: 'http://localhost:3000/posts',
-    type: 'GET'
-    })
- .done(function(get_all_posts){
-    trace(data);
-  }).fail(function(jqXHR, textStatus, errorThrown){
-    trace(jqXHR, textStatus, errorThrown);
-   });
-  };
-  App.append()
+  App.displayPost(event);
 });
 
 
