@@ -8,3 +8,25 @@
 @import "partials/base";
 @import "partials/forms";
 @import "partials/footer";
+
+body {
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.forms {
+  display: inline;
+  float: right;
+}
+
+li.category {
+  margin-top: 15px;
+}
+
+#submit {
+  margin-top: 15px;
+}
+ footer img {
+  height: 30px;
+  width: auto;
+  border-radius: 10px;
+ }
