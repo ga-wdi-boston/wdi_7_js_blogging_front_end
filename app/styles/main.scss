@@ -20,10 +20,20 @@ h1 {
 
 footer {
   height: 50px;
-  background-color: #00B3B8;
+  background-color: #0099FF;
   left: -100px;
   right: -100px;
   padding: 30px;
+  text-align: center;
+  color: white;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+a:hover {
+  color: black;
 }
 
 p {
@@ -45,7 +55,48 @@ p {
   min-height: 200px;
 }
 
-.catbtn {
-  margin-top: 15px;
+#catbtn {
+  margin-top: 35px;
   margin-left: -8px;
+  border-radius: 10px;
+  background-color: #33CCFF;
+  border: none;
+  outline: none;
+  box-shadow: 2px 2px 1px #888888;
+  color: white;
+  height: 12px;
+}
+
+p.pbody {
+  margin-bottom: 20px;
+}
+
+.delbtn {
+  border-radius: 5px;
+  background-color: #33CCFF;
+  border: none;
+  outline: none;
+  box-shadow: 2px 2px 1px #888888;
+  color: white;
+  margin-top: 5px;
+}
+
+.newb {
+  width: 90%;
+  right: 0px;
+  border-radius: 10px;
+  background-color: #33CCFF;
+  border: none;
+  outline: none;
+  box-shadow: 2px 2px 1px #888888;
+  color: white;
+  margin-top: 10px;
+  margin-left: 15px;
+}
+
+.newb:hover {
+  background-color: #0099FF;
+}
+h2 {
+  text-align: center;
 }

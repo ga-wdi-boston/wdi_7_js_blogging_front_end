@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>A Badass Blog</title>
+    <title>bloog</title>
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
@@ -23,78 +23,83 @@
 
     <nav>
       <ul>
-        <li><a href="" title="">A Badass Blog</a></li>
+        <li><a href="" title="">bloog</a></li>
       </ul>
     </nav>
 
     <section class="main-content">
       <header id="header" class="">
-        <h1>This is a Blog</h1>
-        <p class="togtest">something to toggle</p>
+        <h1>this is a bloog</h1>
       </header>
 
       <div class="posts">
-        <p>Here, read a blog post</p>
-        <button id="posts-link">
-          <a href="/posts.html">Posts Link</a>
+        <p>read some posts, if you want</p><br>
       </div>
 
       <div class="forms">
+      <h2>make a new thing</h2>
         <div class="post-form">
-          <button id="post-btn">
-          <h2>Create a new post</h2>
+          <button id="post-btn" class="newb">
+          <h2>new post</h2>
           </button>
           <form id="new-post-form">
             <div class="form-group">
-              <label for="post-title">Post Title</label>
-              <input name="post-title" type="text" placeholder="Post Title" id='post-title'  class='clearme'/>
+              <label for="post-title">post title</label>
+              <input name="post-title" type="text" placeholder="post title" id='post-title'  class='clearme'/>
             </div>
             <div class="form-group">
-              <label for="post-body">Post Body</label>
+              <label for="post-body">post body</label>
               <textarea name="post-body" id="post-body" class='clearme'></textarea>
             </div>
-             <div class="form-group">
-              <label for="post-category">Post Category</label>
-              <input name="post-category" type="text" placeholder="Post Category" id='post-category' />
-            </div>
             <div class="form-group">
-              <input type="submit" id='submit' value="Create Post" />
+              <input type="submit" id='submit' value="create post" />
             </div>
           </form>
         </div>
-        <hr>
+        <button id="newcategory-btn" class="newb">
+          <h2>new category</h2>
+        </button>
+        <form id="newcategory-form">
+         <div class="form-group">
+          <label for="post-category">category</label>
+            <input name="post-category" type="text" placeholder="post category" id='post-category' class='clearme'/>
+          </div>
+          <div class="form-group">
+              <input type="submit" id='submit' value="create category" />
+            </div>
+        </form>
         <div class="user-form">
-          <button id="user-btn"><h2>Create a new user</h2></button>
+          <button id="user-btn" class="newb"><h2>new user</h2></button>
           <form id="user-form">
             <div class="form-group">
-              <label for="username">User name</label>
+              <label for="username">user name</label>
               <input id="username" type="text" name="username" class="clearme"/>
             </div>
             <div class="form-group">
-              <label for="user-firstname">First Name</label>
+              <label for="user-firstname">first name</label>
               <input id="firstname" type="text" name="user-firstname" class="clearme"/>
             </div>
             <div class="form-group">
-              <label for="user-lastname">Last Name</label>
+              <label for="user-lastname">last name</label>
               <input id="lastname" type="text" name="user-lastname" class="clearme"/>
             </div>
             <div class="form-group">
-              <label for="user-email">Email address</label>
+              <label for="user-email">email</label>
               <input id="email" type="email" name="user-email" class="clearme"/>
             </div>
             <div class="form-group">
-              <label for="user-password">Password</label>
+              <label for="user-password">password</label>
               <input id="password" type="password" name="user-password" class="clearme"/>
             </div>
             <div class="form-group">
-              <label for="user-passwordconfirmation">Password Confirmation</label>
+              <label for="user-passwordconfirmation">password confirmation</label>
               <input id="passwordconfirmation" type="password" name="user-passwordconfirmation" class="clearme"/>
             </div>
             <div class="form-group">
               <select id="role" name="role">
-                <option value="">Select Role</option>
-                <option value="generic">Generic</option>
-                <option value="admin">Admin</option>
+                <option value="">select role</option>
+                <option value="generic">generic</option>
+                <option value="admin">admin</option>
               </select>
             </div>
             <div class="form-group">
@@ -108,7 +113,7 @@
     <footer>
       <!-- <div class="footer-content"> -->
         <!-- <div class="column1"> -->
-          <p>Some footer information goes here. Maybe some links to your social media accounts.</p>
+          <p>made with the blood, sweat & tears of a <a href="http://www.generalassemb.ly">wdi </a>student</p>
        <!--  </div> -->
       <!-- </div> -->
     </footer>
@@ -129,6 +134,7 @@
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="js/app.js" type="text/javascript"></script>
+    <script src="js/categories.js" type="text/javascript"></script>
     <!-- endbuild -->
   </body>
 </html>

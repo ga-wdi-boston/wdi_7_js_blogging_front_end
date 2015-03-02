@@ -78,6 +78,7 @@ App.submitPost = function(event){
 };
 
 App.showOnePost = function(post){
+  if(event.preventDefault) event.preventDefault();
   $.ajax({
     url: 'http://localhost:3000/posts/' + post.id,
     type: 'GET',
@@ -98,12 +99,15 @@ App.showOnePost = function(post){
 
 
 App.showPosts = function(post) {
+  if(event.preventDefault) event.preventDefault();
   var div = $('<div class="eachpost">');
   var  html = $('<h3>' + post.title + '</h3>');
   var postBody = $('<p class="pbody">' + post.body + '</p><br>');
-  var button = $('<br><button class="catbtn">Add a Category</button>');
-  var deleteBtn = $('<button class="delbtn">Delete Post</button>');
+  var button = $('<br><select id="cat-btn" name="category"><option value="">select category</option><option value="test1">test1</option><option value="test2">test2</option></select>');
+  var submit = $('<input type="submit" value="submit"/><br>');
+  var deleteBtn = $('<button class="delbtn">delete me</button>');
   postBody.append(button);
+  postBody.append(submit)
   postBody.append(deleteBtn);
   html.append(postBody);
   div.append(html);
@@ -111,6 +115,7 @@ App.showPosts = function(post) {
 };
 
 App.showAllPosts = function(){
+  if(event.preventDefault) event.preventDefault();
   $.ajax({
     url: 'http://localhost:3000/posts',
     type: 'GET',
@@ -130,7 +135,7 @@ App.showAllPosts = function(){
     $(this).removeClass('highlighted');
   });
     $('.delbtn').on('click', function() {
-        $(this).deletePost();
+        App.deletePost();
     });
   });
 };
@@ -150,13 +155,16 @@ App.showAllPosts = function(){
 //     console.log('category added');
 //   });
 // };
+
 App.deletePost = function(post){
   $.ajax({
     url: 'http://localhost:3000/posts' + post.id,
     type: 'DELETE',
+    headers: { 'AUTHORIZATION': 'c9436520a9ef4cd099b95bb9a41738f2' },
   })
   .done(function() {
     console.log("post deleted");
+    $('.post#'+ parseInt(id)).remove();
   })
   .fail(function() {
     console.log("error");
@@ -168,9 +176,13 @@ $(document).ready(function(){
   trace('hello world');
   $('#new-post-form').hide();
   $('#user-form').hide();
+  $('#newcategory-form').hide();
 
   $('#post-btn').on('click', function() {
     $('#new-post-form').slideToggle();
+  });
+  $('#newcategory-btn').on('click', function() {
+    $('#newcategory-form').slideToggle();
   });
   $('#user-btn').on('click', function() {
     $('#user-form').slideToggle();
