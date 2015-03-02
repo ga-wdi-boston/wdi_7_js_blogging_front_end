@@ -52,6 +52,48 @@ App.deletePost = function(post_id){
   });
 };
 
+App.updatePost = function(post_id, new_title, new_body){
+  $.ajax({
+    url: 'http://localhost:3000/posts' + parseInt(post_id),
+    type: 'PATCH',
+    data: {
+      post: {
+      title: new_title,
+      body: new_body,
+      },
+    },
+  }).done(function(post){
+    trace(post)
+    $post.html('<h3>' + new_title + '</h3>' + '<p>' + new_body + '</p>' + '<input type=button class=edit id=' + post_id + ' value="Edit Post" >' + '<input type=button class=delete id=' + post_id + ' value="Delete Post" >');
+    buttonEventHandler();
+  }).fail(function(jqXHR, textStatus, errorThrown){
+    trace(jqXHR, textStatus, errorThrown);
+  });
+};
+
+App.editPost = function(post_id){
+  var $editButtons = $('.edit');
+  $editButtons.unbind();
+
+  var postId = parseInt(post_id);
+  var $newTitle, $newBody;
+  var $title = $('#' + post_id + '.post h3').text();
+  var $body = $('#' + post_id + '.post :not(h3)').text(); // :not removes elements from the set of matched elements
+  var $post = $('#' + post_id + '.post');
+  var postHTML = $post.html();
+
+  $post.html('<div class="post-form"><form id="edit-post-form"><div class="form-group"><input name="post-title" type="text" value="'+ $title +'" id=' + post_id + '></div><div class="form-group"><label for="post-body">Post Body</label><textarea name="post-body" id="post-body">' + $body + '</textarea></div><div class="form-group"><input type="button" id="save" value="Save Post" /><input type="button" id="cancel" value="Cancel" /></div></form></div>');
+
+  var $saveButton = $('#save');
+      $saveButton.on('click', App.updatePost(postId, $newTitle, $newBody));
+
+  var $cancelButton = $('#cancel');
+      $cancelButton.on('click', function(){
+        $post.html(postHTML);
+        buttonEventHandler();
+      });
+    };
+
 var trace = function(){
   for(var i = 0; i < arguments.length; i++){
     console.log(arguments[i]);
