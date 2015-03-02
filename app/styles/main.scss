@@ -8,3 +8,28 @@
 @import "partials/base";
 @import "partials/forms";
 @import "partials/footer";
+
+#categories > div {
+  display: inline-block;
+  height: 100%;
+};
+
+.Browns {
+  background-color: #E34912;
+};
+
+.Cavaliers {
+  background-color: #860038;
+}
+
+.Science {
+background-color: green;
+}
+
+.Philosophy {
+  background-color: #663399;
+}
+
+.Cool-Future-Technology {
+  background-color: #00abef;
+}

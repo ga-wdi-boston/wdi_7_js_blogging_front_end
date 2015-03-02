@@ -11,6 +11,8 @@ var trace = function(){
 $(document).ready(function(){
 
   App.Posts.getPosts();
+  App.Categories.getCategories();
+  App.Categories.hideCategory('.Philosophy');
 
   var $userForm = $('form#user-form');
   $userForm.on('submit', function(e){
@@ -21,5 +23,7 @@ $(document).ready(function(){
   $postForm.on('submit', function(){
     App.Posts.submitPost(event);
   });
+
+  var $categories
 });
 

@@ -21,7 +21,7 @@ App.Posts.getPost = function(id){
 };
 
 App.Posts.directPosts = function(posts){
-  var post = post;
+  var post;
   var html = '<div>';
   posts.forEach(function(post){
     post = new App.Posts.Post(post);
@@ -40,16 +40,16 @@ App.Posts.Post = function(post){
 };
 
 App.Posts.renderPost = function(post){
-  var html = '<div id="post-' + post.id + '">';
+  var html = '<div class="' + post.categories[0].name.replace(/ /g, '-') + '">';
   html += '<h2>' + post.title + '</h2>';
   html += '<article>' + post.body + '</article>';
   html += '</div>';
   return html
 }
 
-App.Posts.deletePost = function(post){
+App.Posts.deletePost = function(id){
   $.ajax({
-    url: 'http://localhost:3000/posts/' + post.id,
+    url: 'http://localhost:3000/posts/' + id,
     type: 'DELETE',
     dataType: 'JSON',
   }).done(function(){
@@ -86,15 +86,11 @@ App.Posts.submitPost = function(event){
     data: {
       post: {
         title: $('#post-title').val(),
-        body: $('#post-body').val()
+        body: $('#post-body').val(),
       }
     },
     headers: {'AUTHORIZATION': '532bb38210474ac1964eeb66ba454508'}
-  }).done(function(data){
-    trace(data);
-  }).fail(function(jqXHR, textStatus, errorThrown){
-    trace(jqXHR, textStatus, errorThrown);
-  });
+  }).done(App.Categories.updateCategory)
 };
 
 
