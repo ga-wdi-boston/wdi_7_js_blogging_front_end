@@ -65,10 +65,12 @@ App.editPost = function(post_id){
 
   $post.html('<div class="post-form"><form id="edit-post-form"><div class="form-group"><input name="post-title" type="text" value="'+ $title +'" id=' + post_id + '></div><div class="form-group"><label for="post-body">Post Body</label><textarea name="post-body" id="post-body">' + $body + '</textarea></div><div class="form-group"><input type="submit" id="save" value="Save Post" /><input type="button" id="cancel" value="Cancel" /></div></form></div>');
 
-  // $('this').html('<h3>' + new_title + '</h3>' + '<p>' + new_body + '</p>' + '<input type=button class=edit id=' + post_id + ' value="Edit Post" >' + '<input type=button class=delete id=' + post_id + ' value="Delete Post" >');
 
   var $saveButton = $('#save');
-      $saveButton.on('submit', App.updatePost(post_id));
+      $saveButton.on('submit', function(event){
+        App.updatePost(event, post_id);
+        $post.html('<h3>' + $newTitle + '</h3>' + '<p>' + $newBody + '</p>' + '<input type=button class=edit id=' + post_id + ' value="Edit Post" >' + '<input type=button class=delete id=' + post_id + ' value="Delete Post" >');
+        });
 
   var $cancelButton = $('#cancel');
       $cancelButton.on('click', function(){
@@ -77,7 +79,7 @@ App.editPost = function(post_id){
       });
     };
 
-App.updatePost = function(post_id){
+App.updatePost = function(event, post_id){
   if(event.preventDefault) event.preventDefault();
   $.ajax({
     url: 'http://localhost:3000/posts/' + parseInt(post_id),
@@ -87,11 +89,10 @@ App.updatePost = function(post_id){
       post: {
         title: $('#post-title').val(),
         body: $('#post-body').val()
-      },
+      }
     },
   }).done(function(data){
     trace(data);
-
     buttonEventHandler();
   }).fail(function(jqXHR, textStatus, errorThrown){
     trace(jqXHR, textStatus, errorThrown);
