@@ -8,3 +8,87 @@
 @import "partials/base";
 @import "partials/forms";
 @import "partials/footer";
+
+* {
+  margin: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+nav {
+  background-color: #383540;
+  font-color: #E1D3FF;
+  font-family: Helvetica;
+}
+
+#nav-buttons {
+  margin: 0 auto;
+}
+
+body {
+  background-color: #CABEE5;
+  font-family: 'Raleway';
+}
+
+#header {
+  text-align: center;
+  font-size: 32px;
+  margin-top: 10px;
+  margin-bottom: 25px;
+}
+
+.site-footer {
+  background-color: #555060;
+  text-align: center;
+}
+
+footer li {
+  display: inline;
+  padding-right: 50px;
+  text-decoration: none;
+  text-align: center;
+}
+
+.page-wrap {
+  min-height: 100%;
+  margin-bottom: -25px;
+}
+
+.page-wrap:after {
+  content: "";
+  display: block;
+}
+
+.site-footer, .page-wrap:after {
+  height: 25px;
+}
+
+a:link {
+    color: #E1D3FF;
+    font-size: 13px;
+}
+
+/* visited link */
+a:visited {
+    color: #E1D3FF;
+    font-size: 13px;
+}
+
+/* mouse over link */
+a:hover {
+    color: #706A7F;
+    font-size: 13px;
+}
+
+/* selected link */
+a:active {
+    color: #E1D3FF;
+    font-size: 13px;
+}
+
+#submit {
+  margin-top: 10px;
+  font-family: 'Raleway';
+}
