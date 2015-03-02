@@ -61,7 +61,29 @@ App.submitPost = function(event){
   return false
 };
 
+App.showAllPosts = function(event){
+  $.ajax({
+    url: 'http://localhost:3000/posts',
+    type: 'GET',
+    dataType: 'JSON'
+  }).done(function(data){
+    for (var i = 0; i < data.length; i++) {
+      var html = "<div id='post-" + data[i].id + "'>";
+      html += "<h3>" + data[i].title + "</h3>";
+      html += "<p>" + data[i].body + "</p>";
+      // html += "<img>" + data[i].img;
+      $('.posts').append(html);
+    }
+  }).fail(function(jqXHR, textStatus, errorThrown){
+    trace(jqXHR, textStatus, errorThrown);
+  });
+}
+
 $(document).ready(function(){
+
+  App.showAllPosts();
+
+
   var $userForm = $('form#user-form');
   $userForm.on('submit',function(event){
     App.submitUser(event,$userForm);
@@ -71,7 +93,7 @@ $(document).ready(function(){
   $postForm.on('submit', function(event){
       App.submitPost(event);
       });
-  trace('hello world') //look up what this is jerk
+  trace('hello world')
 });
 
 

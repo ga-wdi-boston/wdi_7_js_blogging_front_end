@@ -6,11 +6,25 @@ section.main-content {
   @extend .clearfix;
   padding-top: 30px;
 
-  header {}
+  header {
+    h1{
+      text-align: center;
+      color: red;
+    }
+    h2{
+      text-align: center;
+      color: red;
+    }
+  }
 
   div.posts {
     @extend .grid_10;
+
+    h3 {
+    color: blue;
+    text-transform: uppercase;
   }
+}
 
   div.forms {
     @extend .grid_6;
