@@ -68,7 +68,7 @@ App.editPost = function(post_id){
 
   var $saveButton = $('#save');
       $saveButton.on('click', function(event){
-        App.updatePost(event, post_id);
+        App.updatePost(post_id);
         $newTitle = $('#post-title').val();
         $newBody = $('#post-body').val();
         $post.html('<h3>' + $newTitle + '</h3>' + '<p>' + $newBody + '</p>' + '<input type=button class=edit id=' + post_id + ' value="Edit Post" >' + '<input type=button class=delete id=' + post_id + ' value="Delete Post" >');
@@ -82,8 +82,7 @@ App.editPost = function(post_id){
       });
     };
 
-App.updatePost = function(event, post_id){
-  if(event.preventDefault) event.preventDefault();
+App.updatePost = function(post_id){
   $.ajax({
     url: 'http://localhost:3000/posts/' + parseInt(post_id),
     type: 'PATCH',
