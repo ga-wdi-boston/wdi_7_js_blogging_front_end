@@ -2,7 +2,7 @@
 'use strict';
 
 var App = App || {
-  $posts: $('#posts'),
+  $posts: $('.posts'),
 };
 
 $(document).ready(function(){
@@ -18,7 +18,7 @@ App.post = function(id, title, body, created_at, categories){
 };
 
 App.displayPosts = function(event){
-  // if(event.preventDefault) event.preventDefault();
+  if(event.preventDefault) event.preventDefault();
   $.ajax({
     url: 'http://localhost:3000/posts',
     type: 'GET'
@@ -39,16 +39,18 @@ App.addPost = function(post){
   App.$posts.prepend($newPostHTML);
   };
 
-App.deletePost = function(event){
+App.deletePost = function(post_id){
   $.ajax({
-    url: 'http://localhost:3000/posts',
-    type: 'DELETE'
-    }).done(function(post){
-      trace(post);
-    }).fail(function(jqXHR, textStatus, errorThrown){
-    });
-    return false;
-  };
+    url: 'http://localhost:3000/posts/' + parseInt(post_id),
+    type: 'DELETE',
+    headers: {'AUTHORIZATION': '109885dca2fc451fbca7d7795ff65355'},
+  }).done(function(posts){
+    trace(posts);
+    $('.post#'+ parseInt(post_id)).remove(); // parseInt converts the integer to a string
+  }).fail(function(jqXHR, textStatus, errorThrown){
+    trace(jqXHR, textStatus, errorThrown);
+  });
+};
 
 var trace = function(){
   for(var i = 0; i < arguments.length; i++){
@@ -56,16 +58,15 @@ var trace = function(){
   }
 };
 
-
-
 var renderButtons = function(posts){
   for(var i = 0, max = posts.length; i < max; i++){
   var buttonHTML = '<input type=button class=edit id=' + posts[i].id + ' value="Edit Post" >' + '<input type=button class=delete id=' + posts[i].id + ' value="Delete Post" >';
-  $('#' + posts[i].id).append(buttonHTML);
+    $('#' + posts[i].id).append(buttonHTML);
+    buttonEventHandler(posts[i].id);
   }
 };
 
-var buttonEventHandler = function(data){
+var buttonEventHandler = function(){
   var $editButtons = $('.edit');
       $editButtons.on('click', function(){
         App.editPost(this.id);

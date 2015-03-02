@@ -70,19 +70,6 @@ App.submitPost = function(event){
     return false;
   };
 
-App.displayPosts = function(event){
-  // if(event.preventDefault) event.preventDefault();
-  $.ajax({
-    url: 'http://localhost:3000/posts',
-    type: 'GET'
-    }).done(function(data){
-      trace(data);
-      display(data);
-    }).fail(function(jqXHR, textStatus, errorThrown){
-    });
-    return false;
-  };
-
 $('document').ready(function(){
 
   var $userForm = $('form#user-form');
