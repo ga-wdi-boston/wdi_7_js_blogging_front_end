@@ -17,6 +17,11 @@ div.form-group {
     min-height: 100px;
   }
 
+  ul#posts li{
+    list-style-type: none;
+    padding-top: 0;
+  }
+
   ul#post-category {
     list-style-type: none;
     padding-left:0;

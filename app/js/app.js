@@ -50,18 +50,20 @@ var App = (function(){
       return postsData;
     }else{
       for(var i = 0; i < postsData.length; i++){
-        if(postsData[i].id == categoryId){
-          postsArr.push(postsData[i]);
+        for(var j = 0; j < postsData[i].categories.length; j++){
+          if(postsData[i].categories[j].id ==categoryId){
+            postsArr.push(postsData[i]);
+          };
         };
       };
     return postsArr;
     };
   };
 
-  var showFilterPosts = function(postCategories){
+  var showFilterPosts = function(filterPosts){
     $('#posts').children().remove();
-    for(var i = 0; i < postCategories.length; i++){
-      $('#posts').append('<li>' + postCategories[i].body + '</li>'); };
+    for(var i = 0; i < filterPosts.length; i++){
+      $('#posts').append('<li><h4>' + filterPosts[i].title + '</h4>' + filterPosts[i].body +'</li>'); };
   };
 
   var setCategoriesData = function(input){
@@ -115,7 +117,7 @@ var App = (function(){
       type: 'PATCH',
       headers: {'AUTHORIZATION': '015b0bb0383046f5ae3d2ee213fd14cc'}
       }).done(function(data){
-        getPostData();
+        getPostsData();
         trace(data);
       }).fail();
     });
