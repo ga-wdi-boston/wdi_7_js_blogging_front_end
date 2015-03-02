@@ -57,9 +57,9 @@ var App = (function(){
           if(usersData[i].username == username){
             postsArr=(usersData[i].posts);
           };
-      };
+        };
       outFilteredArr=getCategoryFilterPosts($('#filter-category').val(),postsArr);
-    };
+      };
     return outFilteredArr;
   }
   var getCategoryFilterPosts = function(categoryId,filterUserPosts){
@@ -81,7 +81,7 @@ var App = (function(){
   var showFilterPosts = function(filterPosts){
     $('#posts').children().remove();
     for(var i = 0; i < filterPosts.length; i++){
-      $('#posts').append('<li><h4>' + filterPosts[i].title + '</h4>' + filterPosts[i].body +'</li>'); };
+      $('#posts').append('<li id="lipost' + filterPosts[i].id + '">' +'<h4>' + filterPosts[i].title + '</h4>' + filterPosts[i].body +'</li>'); };
   };
 
   var setCategoriesData = function(input){
@@ -169,7 +169,7 @@ var App = (function(){
     }).done(function(postsData){
      setPostsData(postsData);
     // showAllPosts(postsData);
-    showFilterPosts(getFilterPosts($('#filter-category').val()));
+    showFilterPosts(getFilterPosts($('#filter-user').val()));
     showSelectPostOptions(postsData);
     }).fail(function(jqXHR, textStatus, errorThrown){
       trace(jqXHR, textStatus, errorThrown);
@@ -224,6 +224,7 @@ var App = (function(){
       $('#lipost'+$('#delete-post').val()).remove();
       $('#post'+$('#delete-post').val()).remove();
       $('#delete-post').prop('selectedIndex', 0);
+
     }).fail(function(jqXHR, textStatus, errorThrown){
         trace(jqXHR, textStatus, errorThrown);
     });
