@@ -40,9 +40,10 @@ App.addPost = function(post){
   App.$posts.prepend($newPostHTML);
   if(post.images.length != 0){
   post.images.forEach(function(image) {
-    trace(image.url);
-    // $image = $('<img src"' + image.url + '>');
-    App.$posts.prepend($('<img src"' + image.url + '>'));
+    // trace(image.url);
+    var $image = $('<img src="' + image.url + '>');
+    App.$posts.prepend($image);
+    // App.$posts.prepend('<img src="https://s3.amazonaws.com/dubya-blog-bucket/uploads/eb00f33c-b80e-4e72-ada4-36bdc24f551b">');
       });
     };
   };
