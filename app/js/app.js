@@ -79,7 +79,7 @@ var App = (function(){
       for(var i = 0; i < categoriesData.length; i++){
       $('#post-category').append('<li><input type="checkbox" name="categories" value="' + categoriesData[i].id+'"  id="' +categoriesData[i].id + '" />' + categoriesData[i].name + '</li>' );
 
-      $('#delete-category').append('<option value="'+categoriesData[i].id +'">' +categoriesData[i].name +'</option>');
+      $('#delete-category').append('<option id="category' + categoriesData[i].id + '" value="'+categoriesData[i].id +'">' +categoriesData[i].name +'</option>');
       };
     };
 
@@ -103,9 +103,11 @@ var App = (function(){
       type: 'DELETE',
       headers: {'AUTHORIZATION': '015b0bb0383046f5ae3d2ee213fd14cc'}
     }).done(function(categoryData){
+      $('#category'+$('#delete-category').val()).remove();
       $('#delete-category').prop('selectedIndex', 0);
      // trace(categoryData);
-     getCategories();
+     //getCategories();
+     getPostsData();
     }).fail(function(jqXHR, textStatus, errorThrown){
         trace(jqXHR, textStatus, errorThrown);
     });
@@ -120,8 +122,6 @@ var App = (function(){
       url: 'http://localhost:3000/posts',
       type: 'GET',
     }).done(function(postsData){
-     //trace(userData);
-     debugger;
      setPostsData(postsData);
      showAllPosts(postsData);
     }).fail(function(jqXHR, textStatus, errorThrown){
@@ -153,8 +153,8 @@ var App = (function(){
 
   var showAllPosts = function(postsData){
     for(var i = 0; i < postsData.length; i++){
-      $('#posts').append('<li>' + postsData[i].body + '</li>');
-      $('#delete-post').append('<option value="'+postsData[i].id +'">' +postsData[i].title +'</option>');
+      $('#posts').append('<li id="lipost' + postsData[i].id + '">' + postsData[i].body + '</li>');
+      $('#delete-post').append('<option id="post'+postsData[i].id+ '" value="'+postsData[i].id +'">' +postsData[i].title +'</option>');
     };
   };
 
@@ -170,10 +170,9 @@ var App = (function(){
       type: 'DELETE',
       headers: {'AUTHORIZATION': '015b0bb0383046f5ae3d2ee213fd14cc'}
     }).done(function(postsData){
-      debugger;
+      $('#lipost'+$('#delete-post').val()).remove();
+      $('#post'+$('#delete-post').val()).remove();
       $('#delete-post').prop('selectedIndex', 0);
-     // trace(categoryData);
-    // getPostsData();
     }).fail(function(jqXHR, textStatus, errorThrown){
         trace(jqXHR, textStatus, errorThrown);
     });
@@ -230,21 +229,8 @@ var App = (function(){
       $('#posts').append('<li>' + postData[i].body + '</li>' + postData[i].categoriesData) };
   };
 
-  var removeFromList = function() {
-    this.remove();
-  };
-
   return{
     init: init,
-    submitPost:submitPost,
-    submitUser:submitUser,
-    checkedPostCategories:checkedPostCategories,
-    showPostsCategories:showPostsCategories,
-    showUserPosts:showUserPosts,
-    showAllPosts:showAllPosts,
-    getPostsData: getPostsData,
-    showAllCategories:showAllCategories,
-    getCategories:getCategories
     };
 })();
 
