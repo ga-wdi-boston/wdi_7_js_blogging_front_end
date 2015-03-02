@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Javascript Repo Template</title>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+  </head>
+  <body>
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <nav>
+      <ul>
+        <li><a href="" title="">Categories</a></li>
+      </ul>
+    </nav>
+
+    <section class="main-content">
+      <header id="header" class="">
+        <h1>Categories page</h1>
+      </header>
+
+      <div class="categories">
+        <h2>Your Categories</h2>
+      </div>
+
+      <div class="forms">
+        <div class="category-form">
+          <h2>Create a new category</h2>
+          <form id="new-category-form">
+            <div class="form-group">
+              <label for="categories-name">categories name</label>
+              <input name="categories-name" type="text" placeholder="categories name" id='categories-name' />
+            </div>
+            <div class="form-group">
+              <input type="submit" id='submit' value="Create categories" />
+            </div>
+              <!-- drop down menu : would like to use for categories -->
+
+             <!--  <div class="form-group">
+              <select id="role" name="role">
+                <option value="">Select a category</option>
+                <option value="generic">Generic</option>  category section
+                <option value="admin">Admin</option>
+              </select>
+            </div> -->
+          </form>
+        </div>
+        <hr>
+            <div class="form-group">
+              <input type="submit" value="submit"/>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-content">
+        <div class="column1">
+          Some footer information goes here. Maybe some links to your social media accounts.
+        </div>
+      </div>
+    </footer>
+
+    <!-- build:js(.) scripts/oldieshim.js -->
+    <!--[if lt IE 9]>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/json3/lib/json3.js"></script>
+    <![endif]-->
+    <!-- endbuild -->
+
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="js/jquery-2.1.3.js" type="text/javascript"></script>
+    <script src="js/app.js" type="text/javascript"></script>
+    <script src="js/categories.js" type="text/javascript"></script>
+    <!-- endbuild -->
+  </body>
+</html>
