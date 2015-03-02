@@ -11,7 +11,8 @@ App.submitPost = function ( event ) {
     data: {
       post: {
         title: $('#post-title').val(),
-        body: $('#post-body').val()
+        body: $('#post-body').val(),
+        category: $('#post-category').val()
       }
     },
     headers: {'AUTHORIZATION': 'c02ed61e60cb4220b421db4f52ab70b0'}
@@ -27,6 +28,7 @@ App.Post = function ( remotePost ) {
   this.title = remotePost.title;
   this.body = remotePost.body;
   this.id = remotePost.id;
+  this.categories = remotePost.categories;
 };
 
 App.Post.prototype.render = function () {
@@ -51,7 +53,7 @@ App.PostList = {
   }
 };
 
-App.deletePost = function( remotePost) {
+App.deletePost = function( remotePost ) {
   $.ajax({
     url: 'http://localhost:3000/posts/' + remotePost.id,
     type: 'DELETE',
@@ -73,7 +75,7 @@ App.updatePost = function ( id ) {
         body: ''
       }
     },
-  }).done(function(){
+  }).done(function() {
     console.log('post updated');
   });
   return false;
