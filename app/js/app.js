@@ -7,8 +7,23 @@ var trace = function(){
   }
 };
 
-var App = App || {};
 
 $(document).ready(function(){
-  trace('hello world');
+
+  App.Posts.getPosts();
+  App.Categories.getCategories();
+  App.Categories.hideCategory('.Philosophy');
+
+  var $userForm = $('form#user-form');
+  $userForm.on('submit', function(e){
+    App.Users.submitUser(e,$userForm);
+  });
+
+  var $postForm = $('form#new-post-form');
+  $postForm.on('submit', function(){
+    App.Posts.submitPost(event);
+  });
+
+  var $categories
 });
+
