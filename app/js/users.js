@@ -9,7 +9,6 @@ var trace = function(){
 
 var App = App || {};
 
-
 App.submitUser = function(event, form){
   if(event.preventDefault) event.preventDefault();
   $.ajax({
@@ -29,6 +28,7 @@ App.submitUser = function(event, form){
     },
     success: function(data, textStatus,jqXHR){
       trace('I made a new User', data, textStatus,jqXHR);
+      App.addUser(data);
     },
   }).done(function(data){
     trace(data);
@@ -64,20 +64,23 @@ App.showUser = function(user){
   html += '<p>' + user.about + '</p>';
   html += '<p>' + user.email + '</p>';
   $('.users').append(html);
+  App.setUserEventHandler();
 };
 
-App.findUser = function(){
- $.ajax({
-   url: 'http://localhost:3000/users',
-   type: 'GET',
-   dataType: 'JSON',
- })
- .done(function(data) {
-   trace(data);
- })
- .fail(function() {
-   trace("error");
- });
+App.addUser = function(user){
+  var newUser = new App.User( user.id, user.email, user.first_name, user.last_name, user.username, user.token);
+
+  // var html = '';
+  // html += ""
+};
+
+App.User = function(id, email, first_name, last_name, username, token) {
+  this.id = id;
+  this.email = email;
+  this.first_name = first_name;
+  this.last_name = last_name;
+  this.username = username;
+  this.token = token;
 };
 
 App.editUser = function(){
@@ -105,6 +108,29 @@ App.editUser = function(){
     trace(jqXHR, textStatus, errorThrown);
   });
 };
+
+App.deleteUser = function(event){
+  $.ajax({
+    url: 'http://localhost:3000/users/' + event,
+    type: 'DELETE',
+    dataType: 'JSON',
+    headers: {'AUTHORIZATION': 'b254f0ae13c04cff89f80092b9664908'},
+  })
+  .done(function(data) {
+    trace(data);
+  })
+  .fail(function() {
+    console.log("error");
+  });
+};
+
+App.setUserEventHandler = function(){
+  var $deleteUserButton = ('.delete-user')
+  $deleteUserButton.on('click', function() {
+    App.deleteUser(this.id);
+    /* Act on the event */
+  });
+}
 
 $(document).ready(function(){
 
