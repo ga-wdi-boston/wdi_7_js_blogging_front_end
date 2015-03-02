@@ -39,6 +39,28 @@ body {
   margin-bottom: 25px;
 }
 
+#welcome {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+}
+
+hr {
+  display: block;
+  position: relative;
+  margin-top: 5px;
+  margin-bottom: 50px;
+  height: 0;
+  width: 100%;
+  max-height: 0;
+  font-size: 1px;
+  line-height: 0;
+  clear: both;
+  border: none;
+  border-top: 1px solid #383540;
+  border-bottom: 1px solid #CABEE5;
+}
+
 .site-footer {
   background-color: #555060;
   text-align: center;
@@ -53,7 +75,7 @@ footer li {
 
 .page-wrap {
   min-height: 100%;
-  margin-bottom: -25px;
+  margin-bottom: -40px;
 }
 
 .page-wrap:after {
@@ -62,7 +84,7 @@ footer li {
 }
 
 .site-footer, .page-wrap:after {
-  height: 25px;
+  height: 20px;
 }
 
 a:link {

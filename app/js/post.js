@@ -40,7 +40,7 @@ App.Posts.Post= function(post){
 App.Posts.addPost = function(post){
   var newPost = new App.Posts.Post(post.id, post.title, post.body, post.created_at);
   var $newPostHTML = $('<div class=post>');
-  $newPostHTML.html('<h3>' + post.title + '</h3>' + '<p>' + post.body + '</p>');
+  $newPostHTML.html('<h3>' + post.title + '</h3>' + '<p>' + post.body + '</p>' + '<hr>');
   App.Posts.$posts.prepend($newPostHTML);
 };
 
