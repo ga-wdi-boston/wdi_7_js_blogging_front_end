@@ -169,7 +169,7 @@ var App = (function(){
     }).done(function(postsData){
      setPostsData(postsData);
     // showAllPosts(postsData);
-   // showFilterPosts(getFilterPosts($('#filter-category').val()));
+    showFilterPosts(getFilterPosts($('#filter-category').val()));
     showSelectPostOptions(postsData);
     }).fail(function(jqXHR, textStatus, errorThrown){
       trace(jqXHR, textStatus, errorThrown);
@@ -299,8 +299,6 @@ var App = (function(){
 
   return{
     init: init,
-    getCategories:getCategories,
-    getPostsData:getPostsData
     };
 })();
 
