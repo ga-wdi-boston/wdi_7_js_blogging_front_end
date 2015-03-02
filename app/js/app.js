@@ -109,8 +109,8 @@ var renderButtons = function(posts){
   for(var i = 0, max = posts.length; i < max; i++){
   var buttonHTML = '<input type=button class=edit id=' + posts[i].id + ' value="Edit Post" >' + '<input type=button class=delete id=' + posts[i].id + ' value="Delete Post" >';
     $('#' + posts[i].id).append(buttonHTML);
-    buttonEventHandler(posts[i].id);
   }
+  buttonEventHandler();
 };
 
 var buttonEventHandler = function(){
