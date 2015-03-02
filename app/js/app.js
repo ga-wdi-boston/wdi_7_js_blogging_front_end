@@ -110,6 +110,20 @@ App.updatePost = function(post_id){
   return false;
 };
 
+App.displayCategories = function(){
+  $.ajax({
+    url: 'http://localhost:3000/categories',
+    type: 'GET'
+  }).done(function(data){
+    trace(data);
+  });
+};
+
+App.category = function(post_id, name){
+  this.id = post_id;
+  this.name = name;
+};
+
 var trace = function(){
   for(var i = 0; i < arguments.length; i++){
     console.log(arguments[i]);
@@ -118,9 +132,9 @@ var trace = function(){
 
 var renderButtons = function(posts){
   for(var i = 0, max = posts.length; i < max; i++){
-  var buttonHTML = '<input type=button class=edit id=' + posts[i].id + ' value="Edit Post" >' + '<input type=button class=delete id=' + posts[i].id + ' value="Delete Post" >';
+  var buttonHTML = '<input type=button class=edit id=' + posts[i].id + ' value="Edit Post" >' + '<input type=button class=delete id=' + posts[i].id + ' value="Delete Post" >' + '<input type=button class=edit value=Category>';
     $('#' + posts[i].id).append(buttonHTML);
-  }
+    };
   buttonEventHandler();
 };
 
@@ -137,6 +151,7 @@ var buttonEventHandler = function(){
 
 $('document').ready(function(){
     App.displayPosts(event);
+    App.displayCategories();
 
     // var $postForm = $('form#new-post-form');
     // $postForm.on('submit', function(event){
