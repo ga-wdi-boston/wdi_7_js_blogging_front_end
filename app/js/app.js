@@ -75,6 +75,20 @@ App.get_all_posts = function() {
 
   };
 
+App.delete_a_post = function() {
+  if(event.preventDefault) event.preventDefault();
+  $.ajax({
+    url: "http://localhost:3000/posts/#{post.id}",
+    type: 'DELETE',
+    dataType: 'JSON',
+  })
+  .done(function(data) {
+    App.render_all_posts(data);
+    trace(data);
+  });
+
+  };
+
 App.get_all_users = function() {
   if(event.preventDefault) event.preventDefault();
   $.ajax({
@@ -88,7 +102,7 @@ App.get_all_users = function() {
 };
 
 App.render_all_users = function(users){
-  var html = "<h3>Users</h3>";
+  var html = "";
   html += "<ul>";
   users.forEach(function(user){
     html += "<p>";
@@ -98,7 +112,7 @@ App.render_all_users = function(users){
     html += "</p>";
   });
   html += "</ul>";
-  $('.posts').append(html);
+  $('.users').append(html);
 
 };
 
@@ -121,10 +135,18 @@ App.render_all_posts = function(posts){
     $('.posts').append(html);
   };
 
-App.add_categories = function(data){
-    data.categories.push(data.categories);
-    trace(data);
-};
+// App.add_categories = function(data){
+//     data.categories.push(data.categories);
+//     $.ajax({
+//     url: 'http://localhost:3000/posts',
+//     type: 'GET',
+//     dataType: 'JSON',
+//   })
+//   .done(function(data) {
+//     App.
+//   });
+//     trace(data);
+// };
 
 $(document).ready(function(){
   var $userForm = $('form#user-form');
@@ -138,7 +160,7 @@ $(document).ready(function(){
   });
 
   App.get_all_posts();
-  //App.get_all_users();
+  App.get_all_users();
 });
 
 //Joe Smoe
