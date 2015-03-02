@@ -65,20 +65,17 @@ App.editPost = function(post_id){
 
   $post.html('<div class="post-form"><form id="edit-post-form"><div class="form-group"><input name="post-title" type="text" value="'+ $title +'" id=' + post_id + '></div><div class="form-group"><label for="post-body">Post Body</label><textarea name="post-body" id="post-body">' + $body + '</textarea></div><div class="form-group"><input type="submit" id="save" value="Save Post" /><input type="button" id="cancel" value="Cancel" /></div></form></div>');
 
-
   var $saveButton = $('#save');
       $saveButton.on('click', function(event){
         App.updatePost(post_id);
         $newTitle = $('#post-title').val();
         $newBody = $('#post-body').val();
         $post.html('<h3>' + $newTitle + '</h3>' + '<p>' + $newBody + '</p>' + '<input type=button class=edit id=' + post_id + ' value="Edit Post" >' + '<input type=button class=delete id=' + post_id + ' value="Delete Post" >');
-          buttonEventHandler();
         });
 
   var $cancelButton = $('#cancel');
       $cancelButton.on('click', function(){
         $post.html(postHTML);
-        buttonEventHandler();
       });
     };
 
@@ -130,10 +127,10 @@ var buttonEventHandler = function(){
 $('document').ready(function(){
     App.displayPosts(event);
 
-    var $postForm = $('form#new-post-form');
-    $postForm.on('submit', function(event){
-      App.deletePost(event);
-  });
+    // var $postForm = $('form#new-post-form');
+    // $postForm.on('submit', function(event){
+    //   App.deletePost(event);
+  // });
 
 });
 /*"109885dca2fc451fbca7d7795ff65355"*/
