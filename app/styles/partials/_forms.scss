@@ -1,5 +1,6 @@
 div.form-group {
   display: block;
+  padding-top:10px;
 
   label {
     display: block;
@@ -14,6 +15,24 @@ div.form-group {
 
   textarea#post-body {
     min-height: 100px;
+  }
+
+  ul#posts li{
+    list-style-type: none;
+    padding-top: 0;
+  }
+
+  ul#post-category {
+    list-style-type: none;
+    padding-left:0;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    margin:0;
+    //display: inline;
+    //width: 100%;
+  }
+  ul#post-category li {
+    padding-top: 3px;
   }
 }
 

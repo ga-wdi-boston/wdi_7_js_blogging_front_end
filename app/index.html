@@ -30,8 +30,35 @@
         <h1>Front end to consume a Blogging API</h1>
       </header>
 
+      <!-- <div class="categories">
+      <h2> Categories</h2>
+      <ul id='categories'></ul> -->
+      <div class="filter-form">
+        <form id="filter-form">
+        <div class="form-group">
+        <h2> Filter Posts by Users and Category </h2>
+        <select class="select-user" id="filter-user" name="user">
+          <option value="0">All Posts by Users</option>
+          </select>
+        <select class="select-category" id="filter-category" name="category">
+          <option value="0">All Posts by Category</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <input type="submit" value="submit"/>
+        </div>
+      </div>
+      </form>
+      </div>
+      <hr>
+
+
+        <!-- <p>Placeholder content.</p> -->
+      </div>
+
       <div class="posts">
-        <p>Placeholder content.</p>
+      <ul id='posts'></ul>
+        <!-- <p>Placeholder content.</p> -->
       </div>
 
       <div class="forms">
@@ -47,7 +74,22 @@
               <textarea name="post-body" id="post-body"></textarea>
             </div>
             <div class="form-group">
+              <label for="post-category">Post Categories</label>
+              <ul id="post-category"></ul>
+            </div>
+            <div class="form-group">
               <input type="submit" id='submit' value="Create Post" />
+            </div>
+          </form>
+        </div>
+        <hr>
+        <div class = "category-form">
+          <h2>Create a new category</h2>
+          <form id="category-form">
+            <div class="form-category">
+            <label for="name">Category Name</label>
+              <input id="category-name" type="text" name="categoryname"/>
+              <input type="submit" value="submit"/>
             </div>
           </form>
         </div>
@@ -91,8 +133,39 @@
             </div>
           </form>
         </div>
+
+      <div class="remove-form">
+        <hr>
+        <form id="remove-category-form">
+        <div class="form-group">
+        <h2> Remove a Category </h2>
+          <select class="select-category" id="delete-category" name="category">
+          <option value="">Select Category</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <input type="submit" value="submit"/>
+        </div>
       </div>
-    </section>
+      </form>
+      <form id="remove-post-form">
+        <div class="form-group">
+        <h2> Remove a Post </h2>
+          <select id="delete-post" name="post">
+          <option value="">Select Post</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <input type="submit" value="submit"/>
+        </div>
+      </div>
+      </form>
+    </div>
+  </section>
+
+        </div>
+      </div>
+
 
     <footer>
       <div class="footer-content">
