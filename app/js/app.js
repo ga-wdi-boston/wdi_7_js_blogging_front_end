@@ -152,7 +152,6 @@ var App = (function(){
   };
 
   var showAllPosts = function(postsData){
-    debugger;
     for(var i = 0; i < postsData.length; i++){
       $('#posts').append('<li>' + postsData[i].body + '</li>');
       $('#delete-post').append('<option value="'+postsData[i].id +'">' +postsData[i].title +'</option>');
@@ -171,9 +170,10 @@ var App = (function(){
       type: 'DELETE',
       headers: {'AUTHORIZATION': '015b0bb0383046f5ae3d2ee213fd14cc'}
     }).done(function(postsData){
+      debugger;
       $('#delete-post').prop('selectedIndex', 0);
      // trace(categoryData);
-     getPostsData();
+    // getPostsData();
     }).fail(function(jqXHR, textStatus, errorThrown){
         trace(jqXHR, textStatus, errorThrown);
     });
@@ -228,6 +228,10 @@ var App = (function(){
    // debugger;
     for(var i = 0; i < postData.length; i++){
       $('#posts').append('<li>' + postData[i].body + '</li>' + postData[i].categoriesData) };
+  };
+
+  var removeFromList = function() {
+    this.remove();
   };
 
   return{
