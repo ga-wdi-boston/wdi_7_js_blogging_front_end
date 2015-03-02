@@ -9,12 +9,13 @@ $(document).ready(function(){
   trace('hello world');
 });
 
-App.post = function(id, title, body, created_at, categories){
+App.post = function(id, title, body, created_at, categories, images){
   this.id = id;
   this.title = title;
   this.body = body;
   this.created_at = created_at;
   this.categories = categories;
+  this.images = images;
 };
 
 App.displayPosts = function(event){
@@ -31,12 +32,19 @@ App.displayPosts = function(event){
   };
 
 App.addPost = function(post){
-  var post = new App.post(post.id, post.title, post.body, post.created_at, post.categories);
+  var post = new App.post(post.id, post.title, post.body, post.created_at, post.categories, post.images);
   var postHTML = '';
   post.categories.forEach(function(post){postHTML += post.id + ' '});
   var $newPostHTML = $('<div class=post id='+ post.id + ' data-categories="' + postHTML + '">');
   $newPostHTML.html('<h3>' + post.title + '</h3>' + '<p>' + post.body);
   App.$posts.prepend($newPostHTML);
+  if(post.images.length != 0){
+  post.images.forEach(function(image) {
+    trace(image.url);
+    // $image = $('<img src"' + image.url + '>');
+    App.$posts.prepend($('<img src"' + image.url + '>'));
+      });
+    };
   };
 
 App.deletePost = function(post_id){
