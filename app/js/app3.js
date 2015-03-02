@@ -68,10 +68,54 @@ $(document).ready(function(){
   });
 
 
+  $(document).ready(function() {
+  $.ajax({
+    url: 'http://localhost:3000/posts',
+    type: 'GET',
+    dataType: 'JSON'
+  })
+  .done(function(posts) {
+
+    var $postsDiv = $('#posts');
+    for (var i = 0; i < posts.length; i++) {
+      console.log(posts[i].title);
+
+      //debugger;
+      // Create a new jQuery object to represent a 'div'
+      $postsDiv = $("<div>"); // $('<div>') creates a NEW div. $('div') finds all divs
+
+      // Set the text of that div to be the user's name
+      $postsDiv.text(posts[i].title);
+
+      // Append this new div to the div with id 'users'
+      $postsDiv.append('#posts');
+    };
+  });
+});
 
 
+   $(document).ready(function() {
+  $.ajax({
+    url: 'http://localhost:3000/users',
+    type: 'GET',
+    dataType: 'JSON'
+  })
+  .done(function(users) {
 
+    var $usersDiv = $('#users');
+    for (var i = 0; i < users.length; i++) {
+      console.log(users[i].username);
+      // Create a new jQuery object to represent a 'div'
+      $usersDiv = $("<div>"); // $('<div>') creates a NEW div. $('div') finds all divs
 
+      // Set the text of that div to be the user's name
+      $usersDiv.text(users[i].username);
+
+      // Append this new div to the div with id 'users'
+      $usersDiv.append($usersDiv);
+    };
+  });
+});
 
 
 

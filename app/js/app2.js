@@ -67,14 +67,5 @@ $(document).ready(function(){
     App.submitPost(event);
   });
 
-
-
-
-
-
-
-
-
   trace("Hello World");
 });
-
