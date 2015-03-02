@@ -109,7 +109,6 @@ App.getUsers = function(results){
     console.log(results);
     for (var i = 0; i < results.length; i++){
       $('#show-user').append('<option value="' + results[i].email + '">' + results[i].email + '</option');
-      // ($(this)[0].id);
     }
   });
 };
