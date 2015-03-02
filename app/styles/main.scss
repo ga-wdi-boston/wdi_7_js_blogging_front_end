@@ -8,3 +8,117 @@
 @import "partials/base";
 @import "partials/forms";
 @import "partials/footer";
+
+body {
+  font-family: 'Raleway', sans-serif;
+  margin-top: 30px;
+}
+
+h1 {
+  font-size:30px;
+}
+
+footer {
+  height: 50px;
+  background-color: #0099FF;
+  left: -100px;
+  right: -100px;
+  padding: 30px;
+  text-align: center;
+  color: white;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+a:hover {
+  color: black;
+}
+
+p {
+  font-size: 13px;
+}
+
+.eachpost {
+  background-color: #F0F0F0;
+  border-radius: 10px;
+  padding-left: 40px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin: 2px;
+  min-height: 150px;
+}
+
+.highlighted {
+  background-color: #C0C0C0;
+  min-height: 200px;
+}
+
+#catbtn {
+  margin-top: 35px;
+  margin-left: -8px;
+  border-radius: 10px;
+  background-color: #33CCFF;
+  border: none;
+  outline: none;
+  box-shadow: 2px 2px 1px #888888;
+  color: white;
+  height: 12px;
+}
+
+p.pbody {
+  margin-bottom: 20px;
+}
+
+.delbtn {
+  border-radius: 5px;
+  background-color: #33CCFF;
+  border: none;
+  outline: none;
+  box-shadow: 2px 2px 1px #888888;
+  color: white;
+  margin-top: 5px;
+}
+
+.newb {
+  width: 90%;
+  right: 0px;
+  border-radius: 10px;
+  background-color: #33CCFF;
+  border: none;
+  outline: none;
+  box-shadow: 2px 2px 1px #888888;
+  color: white;
+  margin-top: 10px;
+  margin-left: 15px;
+}
+
+.newb:hover {
+  background-color: #0099FF;
+}
+h2 {
+  text-align: center;
+}
+
+.catdivs {
+  text-align: center;
+  background-color: #0099FF;
+  border-radius: 5px;
+  min-height: 25px;
+  padding: 1px;
+  color: white;
+  margin: 3px auto;
+  max-width: 50%;
+  border: none;
+  outline: none;
+  box-shadow: 2px 2px 1px #888888;
+}
+
+.catdivs:hover {
+  background-color: #FF5C6E;
+}
+
+.cathighlighted {
+ background-color: #FF5C6E;
+}

@@ -5,6 +5,9 @@ section.main-content {
   @extend .container;
   @extend .clearfix;
   padding-top: 30px;
+  margin-left: 100px;
+  margin-right: 100px;
+  overflow: scroll;
 
   header {}
 
