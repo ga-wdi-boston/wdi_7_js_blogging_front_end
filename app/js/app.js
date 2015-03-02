@@ -27,7 +27,7 @@ App.createCategory = function(){
   });
 };
 
-App.submitUser = function(event, form){
+App.createUser = function(event, form){
   if(event.preventDefault) event.preventDefault();
   $.ajax({
     url: 'http://localhost:3000/users',
@@ -54,7 +54,7 @@ App.submitUser = function(event, form){
   });
 };
 
-App.submitPost = function(event){
+App.createPost = function(event){
   if(event.preventDefault) event.preventDefault();
   $.ajax({
     url:"http://localhost:3000/posts",
@@ -86,19 +86,6 @@ App.getPosts = function(){
   });
 };
 
-
-
-App.showAllPosts = function(results){
-  for (var i = 0; i < results.length; i++){
-    $('.posts').append('<article>' + results[i].title + '<br>' + results[i].body + '</article>');
-    $('.posts').append('<br>');
-  }
-};
-
-App.showOnePost = function(results){
-  $('.posts').append('<article>' + results[0].title + '<br>' + results[0].body + '</article>');
-};
-
 App.getCategories = function(results){
   $.ajax({
     url: 'http://localhost:3000/categories',
@@ -112,15 +99,62 @@ App.getCategories = function(results){
   });
 };
 
+App.getUsers = function(results){
+  $.ajax({
+    url: 'http://localhost:3000/users',
+    type: 'GET',
+    dataType: 'JSON'
+  })
+  .done(function(results) {
+    console.log(results);
+    for (var i = 0; i < results.length; i++){
+      $('#show-user').append('<option value="' + results[i].email + '">' + results[i].email + '</option');
+      // ($(this)[0].id);
+    }
+  });
+};
+
+
+App.showAllPosts = function(results){
+  for (var i = 0; i < results.length; i++){
+    $('.posts').append('<article>' + results[i].title + '<br>' + results[i].body + '</article>');
+    $('.posts').append('<br>');
+  }
+};
+
+App.showOnePost = function(results){
+  $('.posts').append('<article>' + results[0].title + '<br>' + results[0].body + '</article>');
+};
+
+App.showUserPosts = function(){
+  if(event.preventDefault) event.preventDefault();
+
+  $.ajax({
+    url: 'http://localhost:3000/users',
+    type: 'GET',
+    dataType: 'JSON'
+  })
+  .done(function(results) {
+    console.log(results);
+    // // // $('#posts').val('');
+    // for (var i = 0; i < results.length; i++){
+    //   for (var j=0; j < results.posts.length; j++){
+    //     console.log(results[i].posts[j].title);
+    // //     // $('#posts').append('<article>' + results[i].posts[j].title + '<br>' + results[i].posts[j].body + '</article>');
+    //   };
+    // };
+  });
+};
 
 
 App.init = function() {
   App.getCategories();
   App.getPosts();
+  App.getUsers();
 
   var $userForm = $('form#user-form');
   $userForm.on('submit', function(event){
-    App.submitUser(event,$userForm);
+    App.createUser(event,$userForm);
   });
 
   var $categoryForm = $('form#new-category-form');
@@ -130,7 +164,12 @@ App.init = function() {
 
   var $postForm = $('form#new-post-form');
   $postForm.on('submit',function(event){
-    App.submitPost(event);
+    App.createPost(event);
+  });
+
+  var $showUsersForm = $('form#show-users-form');
+  $showUsersForm.on('submit',function(event){
+    App.showUserPosts(event);
   });
 
 };
