@@ -4,7 +4,7 @@ var Post = Post || {};
 
 Post.getPosts = function(){
   $.ajax({
-    url: "'http://localhost:3000/posts",
+    url: "'http://localhost:9000",
     type: "GET",
     dataType: 'json'
 
