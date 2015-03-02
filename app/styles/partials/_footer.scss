@@ -1,9 +1,10 @@
 footer {
-  min-height: 300px;
-  background-color: $black-50;
+  display: block;
+  padding: 10px;
 
   div.footer-content {
     @extend .container;
+
 
     div.column1 {
       @extend .grid_4;
