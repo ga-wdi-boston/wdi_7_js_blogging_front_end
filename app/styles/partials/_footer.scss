@@ -1,6 +1,8 @@
 footer {
-  min-height: 300px;
+  min-height: 100px;
   background-color: $black-50;
+  bottom: 0px;
+  width: 100%;
 
   div.footer-content {
     @extend .container;
