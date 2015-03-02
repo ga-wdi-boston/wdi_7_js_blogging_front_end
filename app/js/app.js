@@ -15,6 +15,7 @@ var App = (function(){
   var init = function() {
     getCategories();
     getPostsData();
+    getUsers();
 
     var $userForm = $('form#user-form');
     $userForm.on('submit',function(e){
@@ -40,19 +41,36 @@ var App = (function(){
     var $filterForm = $('form#filter-form');
     $filterForm.on('submit', function(e){
     if(e.preventDefault) e.preventDefault();
-    showFilterPosts(getFilterPosts($('#filter-category').val()));
+   // showUsersPosts($('#filter-user').val());
+    var out = (getFilterPosts($('#filter-user').val()));
+    showFilterPosts(out);
     });
   };
 
-  var getFilterPosts = function(categoryId){
+  var getFilterPosts = function(username){
+      var postsArr;
+      var outFilteredArr;
+      if(username == 0){
+        outFilteredArr=(getCategoryFilterPosts($('#filter-category').val(),postsData));
+      }else{
+        for(var i = 0; i < usersData.length; i++){
+          if(usersData[i].username == username){
+            postsArr=(usersData[i].posts);
+          };
+      };
+      outFilteredArr=getCategoryFilterPosts($('#filter-category').val(),postsArr);
+    };
+    return outFilteredArr;
+  }
+  var getCategoryFilterPosts = function(categoryId,filterUserPosts){
     var postsArr=[];
     if(categoryId == 0){
-      return postsData;
+      return filterUserPosts;
     }else{
-      for(var i = 0; i < postsData.length; i++){
-        for(var j = 0; j < postsData[i].categories.length; j++){
-          if(postsData[i].categories[j].id ==categoryId){
-            postsArr.push(postsData[i]);
+      for(var i = 0; i < filterUserPosts.length; i++){
+        for(var j = 0; j < filterUserPosts[i].categories.length; j++){
+          if(filterUserPosts[i].categories[j].id ==categoryId){
+            postsArr.push(filterUserPosts[i]);
           };
         };
       };
@@ -151,7 +169,7 @@ var App = (function(){
     }).done(function(postsData){
      setPostsData(postsData);
     // showAllPosts(postsData);
-    showFilterPosts(getFilterPosts($('#filter-category').val()));
+   // showFilterPosts(getFilterPosts($('#filter-category').val()));
     showSelectPostOptions(postsData);
     }).fail(function(jqXHR, textStatus, errorThrown){
       trace(jqXHR, textStatus, errorThrown);
@@ -256,11 +274,28 @@ var App = (function(){
     });
   };
 
-  var showUserPosts = function(postData){
-   // debugger;
-    for(var i = 0; i < postData.length; i++){
-      $('#posts').append('<li>' + postData[i].body + '</li>' + postData[i].categoriesData) };
+  var getUsers = function(){
+    $.ajax({
+      url: 'http://localhost:3000/users',
+      type: 'GET',
+    }).done(function(users){
+      usersData=users;
+    showSelectUsersOptions(users);
+    }).fail(function(jqXHR, textStatus, errorThrown){
+      trace(jqXHR, textStatus, errorThrown);
+    });
   };
+
+  var showSelectUsersOptions = function(usersData){
+    for(var i = 0; i < usersData.length; i++){
+      $('#filter-user').append('<option id="'+usersData[i].username+ '" value="'+usersData[i].username +'">' +usersData[i].username +'</option>');
+    };
+  };
+
+  // var showUserPosts = function(postData){
+  //   for(var i = 0; i < postData.length; i++){
+  //     $('#posts').append('<li>' + postData[i].body + '</li>' + postData[i].categoriesData) };
+  // };
 
   return{
     init: init,
