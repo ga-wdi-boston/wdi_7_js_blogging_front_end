@@ -103,11 +103,12 @@ App.showPosts = function(post) {
   var div = $('<div class="eachpost">');
   var  html = $('<h3>' + post.title + '</h3>');
   var postBody = $('<p class="pbody">' + post.body + '</p><br>');
-  var button = $('<br><select id="cat-btn" name="category"><option value="">select category</option><option value="test1">test1</option><option value="test2">test2</option></select>');
-  var submit = $('<input type="submit" value="submit"/><br>');
+
+  var catselect = $('<br><select id="cat-btn" name="category"><option value="">select category</option><option value="test1">design</option><option value="test2">development</option><option value="test3">illustration</option><option value="test4">photography</option><option value="test5">ruby</option></select>');
+  var submit = $('<input id="catsubmit" type="submit" value="submit"/><br>');
   var deleteBtn = $('<button class="delbtn">delete me</button>');
-  postBody.append(button);
-  postBody.append(submit)
+  postBody.append(catselect);
+  postBody.append(submit);
   postBody.append(deleteBtn);
   html.append(postBody);
   div.append(html);
@@ -135,7 +136,11 @@ App.showAllPosts = function(){
     $(this).removeClass('highlighted');
   });
     $('.delbtn').on('click', function() {
+        alert('Haha, no.');
         App.deletePost();
+    });
+    $('#catsubmit').on('click', function() {
+        alert('Haha, no.');
     });
   });
 };
@@ -187,6 +192,7 @@ $(document).ready(function(){
   $('#user-btn').on('click', function() {
     $('#user-form').slideToggle();
   });
+
   App.showAllPosts();
    $('h1').on('click', function() {
     console.log('click works');
@@ -209,3 +215,4 @@ $(document).ready(function(){
 
 // merp token = 369d401a3b71418c84be93f0d3e5caa9
 // katyf token = c9436520a9ef4cd099b95bb9a41738f2
+

@@ -100,3 +100,25 @@ p.pbody {
 h2 {
   text-align: center;
 }
+
+.catdivs {
+  text-align: center;
+  background-color: #0099FF;
+  border-radius: 5px;
+  min-height: 25px;
+  padding: 1px;
+  color: white;
+  margin: 3px auto;
+  max-width: 50%;
+  border: none;
+  outline: none;
+  box-shadow: 2px 2px 1px #888888;
+}
+
+.catdivs:hover {
+  background-color: #FF5C6E;
+}
+
+.cathighlighted {
+ background-color: #FF5C6E;
+}

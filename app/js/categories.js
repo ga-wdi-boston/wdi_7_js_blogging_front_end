@@ -8,6 +8,7 @@ var trace = function(){
 };
 
 var App = App || {};
+var categoryArray;
 
 
 App.Category = function(id, name) {
@@ -23,8 +24,8 @@ App.submitCategory = function(event){
     type: 'POST',
     dataType: 'json',
     data: {
-      post: {
-        category: $('#post-category').val(),
+      category: {
+        name: $('#post-category').val(),
       }
     },
     headers: { 'AUTHORIZATION': 'c9436520a9ef4cd099b95bb9a41738f2' },
@@ -42,22 +43,61 @@ App.submitCategory = function(event){
     type: 'GET',
   })
   .done(function(results) {
-    console.log("success");
-    results.forEach(App.showPosts);
+    console.log(results);
+    // results.forEach(App.showPosts);
   });
 };
 
+App.showAllCategories = function(){
+  $.ajax({
+    url: 'http://localhost:3000/categories',
+    type: 'GET'
+  })
+  .done(function(results){
+      console.log('category success');
+      results.forEach(App.showCategories);
+      categoryArray = results;
+      $('.catdivs').on('click', function() {
+        console.log('click works');
+        var $highlightcat = $(this).closest('.catdivs');
+        if ($highlightcat.hasClass('cathighlighted')){
+          $highlightcat.removeClass('cathighlighted');
+        } else {
+          $highlightcat.addClass('cathighlighted');
+        }
+      });
+  });
+  return categoryArray;
+};
 
+App.showCategories = function(category){
+
+  var $categoryDivs = $('<div class="catdivs" id=category id='+ category.id + '>');
+  var $categoryText = $('<p>' + category.name + '</p>');
+  $categoryDivs.append($categoryText);
+  $('#categoriesList').append($categoryDivs);
+
+};
+
+//   App.iterateCategories = function(array){
+//   for (var i = 0; i <= array.length; i++) {
+//     console.log(array[i]);
+//   }
+// };
 
 
 
 $(document).ready(function(){
+
+  // App.iterateCategories(categoryArray);
+
 
    var $categoryForm = $('form#newcategory-form');
   $categoryForm.on('submit', function(event){
     App.submitCategory(event, $categoryForm);
   });
 
+  App.showAllCategories();
 });
 
 
