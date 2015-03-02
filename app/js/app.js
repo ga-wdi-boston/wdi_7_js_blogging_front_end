@@ -11,6 +11,7 @@ App.Post = function(remotePost){
 App.Post.prototype.render = function(){
   var html = "<h2>" + this.title + "</h2>";
   html += "<p>" + this.body + "</p>";
+  html += "<button type='button' id='delete-post'>" + "Delete post" + "</button>"
   return html;
 };
 
@@ -129,6 +130,17 @@ App.getUser = function(){
   });
 };
 
+// DELETE actions------------------------------------------------------
+
+App.deletePost = function(){
+  $.ajax({
+    url: 'http://localhost:3000/post',
+    type: 'DELETE',
+  }).done(function(data){
+    console.log('that tickles');
+  });
+};
+
 // Doc ready-----------------------------------------------------------
 
 $(document).ready(function(){
@@ -143,6 +155,11 @@ $(document).ready(function(){
   var $categoryForm = $('form#category-form')
   $categoryForm.on('submit', function(event){
     App.submitCategory(event);
+  });
+  var $deletePost = $('#delete-post');
+  $deletePost.on('click', function(){
+    // App.deletePost();
+    console.log('that tickles');
   });
 
   App.getPost();
