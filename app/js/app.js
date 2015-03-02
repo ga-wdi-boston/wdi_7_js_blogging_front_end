@@ -36,26 +36,28 @@ App.submitUser = function(event, form){
   });
 }
 
-App.addCategory = function(event){
-  if(event.preventDefault) event.preventDefault();
-  $.ajax({
-    url: 'http://localhost:3000/posts',
-    type: 'POST',
-    dataType: 'JSON',
-    data: {
-      post: {
-        categories: $('#post-category').val()
-      }
-    },
-    headers: { 'AUTHORIZATION': '3993a861c060430b82c24f9b6c8fd7d8' },
-  }).done(function(data){
-    trace(data);
-    debugger
-  }).fail(function(jqXHR, textStatus, errorThrown){
-    trace(jqXHR, textStatus, errorThrown);
-    debugger // this is currently failing
-  });
-}
+// App.addCategory = function(event){
+//   if(event.preventDefault) event.preventDefault();
+//   $.ajax({
+//     url: 'http://localhost:3000/posts',
+//     type: 'POST',
+//     dataType: 'JSON',
+//     data: {
+//       post: {
+//         categories: {
+//           name: $('#post-category').val()
+//         }
+//       }
+//     },
+//     headers: { 'AUTHORIZATION': '3993a861c060430b82c24f9b6c8fd7d8' },
+//   }).done(function(data){
+//     trace(data);
+//     debugger
+//   }).fail(function(jqXHR, textStatus, errorThrown){
+//     trace(jqXHR, textStatus, errorThrown);
+//     debugger // this is currently failing
+//   });
+// }
 
 App.submitPost = function(event){
   if(event.preventDefault) event.preventDefault();
@@ -67,14 +69,13 @@ App.submitPost = function(event){
       post: {
         title: $('#post-title').val(),
         body: $('#post-body').val(),
-        //categories: $('#post-category').val()
       }
     },
     headers: { 'AUTHORIZATION': '3993a861c060430b82c24f9b6c8fd7d8' },
   }).done(function(data){
     trace(data);
-    data.categories.push(App.addCategory(data));
     debugger
+    data.categories.name.push($('#post-category').val());
   }).fail(function(jqXHR, textStatus, errorThrown){
     trace(jqXHR, textStatus, errorThrown);
   });
@@ -114,8 +115,8 @@ $(document).ready(function(){
 
   var $postForm = $('form#new-post-form');
   $postForm.on('submit', function(event){
-    App.addCategory(event);
     App.submitPost(event);
+    App.addCategory(event);
   });
 
   App.showPosts();
