@@ -1,5 +1,3 @@
-
-
 /*global $:false*/
 'use strict';
 
@@ -9,33 +7,6 @@ var trace = function(){
   for(var i = 0; i < arguments.length; i++){
     console.log(arguments[i]);
   }
-};
-
-App.submitUser = function(event, form){
-    if(event.preventDefault) event.preventDefault();
-    $.ajax({
-      url: 'http://localhost:3000/users',
-      type: 'POST',
-      dataType: 'JSON',
-      data:{
-        user: {
-          username: $('#username').val(),
-          email: $('#email').val(),
-          password: $('#password').val(),
-          password_confirmation: $('#passwordconfirmation').val(),
-          role: $('#role').val(),
-          first_name: $('#firstname').val(),
-          last_name: $('#lastname').val(),
-        }
-      },
-      success: function(data, textStatus,jqXHR){
-        trace('I made a new User', data, textStatus,jqXHR);
-      },
-    }).done(function(data){
-      trace(data);
-    }).fail(function(jqXHR, textStatus, errorThrown){
-      trace(jqXHR, textStatus, errorThrown);
-    });
 };
 
 App.submitPost = function(event){
@@ -48,7 +19,6 @@ App.submitPost = function(event){
       post: {
         title: $('#post-title').val(),
         body: $('#post-body').val(),
-        categories: [$('#post-category').val()]
         },
     },
     headers: {'AUTHORIZATION': 'b254f0ae13c04cff89f80092b9664908'},
@@ -58,6 +28,52 @@ App.submitPost = function(event){
     trace(jqXHR, textStatus, errorThrown);
   });
   return false;
+};
+
+App.getAllPosts = function(){
+  $.ajax({
+    url: 'http://localhost:3000/posts',
+    type: 'GET',
+    dataType: 'JSON'
+  })
+  .done(function(data) {
+    trace(data);
+    App.listAllPosts(data);
+  })
+  .fail(function(jqXHR, textStatus, errorThrown){
+    trace(jqXHR, textStatus, errorThrown);
+  });
+};
+
+App.listAllPosts = function(posts){
+  for (var i = 0; i < 5; i++) {
+    App.showPost(posts[i]);
+  }
+};
+
+App.showPost = function(post){
+  var html = '';
+  html += '<div>';
+  html += '<h3>' + post.title + '</h3>';
+  html += '<p>' + post.body + '</p>';
+  html += '</div>';
+  // html += '<button name="button" class="delete-post" id="' + post.id + '">Delete Post</button>';
+  $('.posts').append(html);
+};
+
+App.deletePost = function(event){
+  event.preventDefault;
+  $.ajax({
+    url: 'http://localhost:3000/posts/' + post.id,
+    type: 'DELETE',
+    dataType: 'JSON',
+  })
+  .done(function(data) {
+    trace(data);
+  })
+  .fail(function() {
+    console.log("error");
+  });
 };
 
 App.submitCategory = function(event){
@@ -78,84 +94,6 @@ App.submitCategory = function(event){
   .fail(function() {
     console.log("error");
   });
-};
-
-App.getAllUsers = function(){
-  $.ajax({
-    url: 'http://localhost:3000/users',
-    type: 'GET',
-    dataType: 'JSON',
-  })
-  .done(function(data) {
-    console.log("success");
-    App.listAllUsers(data);
-  })
-  .fail(function() {
-    console.log("error");
-  });
-};
-
-App.listAllUsers = function(users){
-  for (var i = 0; i < users.length; i++) {
-    App.showUser(users[i]);
-  }
-};
-
-App.showUser = function(user){
-  var html = '';
-  html += '<h3>' + user.name + '</h3>';
-  html += '<p>' + user.about + '</p>';
-  html += '<p>' + user.email + '</p>';
-  $('.users').append(html);
-};
-
-App.findUser = function(){
- $.ajax({
-   url: 'http://localhost:3000/users',
-   type: 'GET',
-   dataType: 'JSON',
- })
- .done(function(data) {
-   trace(data);
- })
- .fail(function() {
-   trace("error");
- });
-
-};
-
-App.editUser = function(){
-
-};
-
-App.getAllPosts = function(){
-  $.ajax({
-    url: 'http://localhost:3000/posts',
-    type: 'GET',
-    dataType: 'JSON'
-  })
-  .done(function(data) {
-    trace(data);
-    App.listAllPosts(data);
-  })
-  .fail(function(jqXHR, textStatus, errorThrown){
-    trace(jqXHR, textStatus, errorThrown);
-  });
-};
-
-App.listAllPosts = function(posts){
-  for (var i = 0; i < posts.length; i++) {
-    App.showPost(posts[i]);
-  }
-};
-
-App.showPost = function(post){
-  var html = '';
-  html += '<div>';
-  html += '<h3>' + post.title + '</h3>';
-  html += '<p>' + post.body + '</p>';
-  html += '</div>';
-  $('.posts').append(html);
 };
 
 App.getAllCategories = function(){
@@ -187,6 +125,13 @@ App.showCategory = function(category){
 
 
 $(document).ready(function(){
+
+
+  App.getAllPosts();
+
+  // App.getAllUsers();
+
+
   var $userForm = $('form#user-form');
   $userForm.on('submit', function(event){
     App.submitUser(event, $userForm);
@@ -202,10 +147,15 @@ $(document).ready(function(){
   });
 
   var $findUserForm = $('form#findUser-form');
-  $findUserForm.on('submit', function(event) { App.findUser(event);
+  $findUserForm.on('submit', function(event) {
+    App.findUser(event);
   });
-  // App.getAllPosts();
-  // App.getAllUsers();
+
+  var $deletePostForm = $("button");
+  $deletePostForm.on("click", function(event) {
+    trace('Hello Deletion ');
+    // App.deletePost(event);
+  });
 
   // $('form#new-post-form').on('submit', App.getAllPosts);
 
