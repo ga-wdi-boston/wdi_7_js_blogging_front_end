@@ -7,7 +7,6 @@ var trace = function(){
   }
 };
 
-//var App = App || {};
 var App = (function(){
   var categoriesData;
   var usersData;
@@ -16,6 +15,7 @@ var App = (function(){
   var init = function() {
     getCategories();
     getPostsData();
+
     var $userForm = $('form#user-form');
     $userForm.on('submit',function(e){
     submitUser(e);
@@ -36,6 +36,32 @@ var App = (function(){
     $postForm.on('submit', function(e){
     submitPost(e);
     });
+
+    var $filterForm = $('form#filter-form');
+    $filterForm.on('submit', function(e){
+    if(e.preventDefault) e.preventDefault();
+    showFilterPosts(getFilterPosts($('#filter-category').val()));
+    });
+  };
+
+  var getFilterPosts = function(categoryId){
+    var postsArr=[];
+    if(categoryId == 0){
+      return postsData;
+    }else{
+      for(var i = 0; i < postsData.length; i++){
+        if(postsData[i].id == categoryId){
+          postsArr.push(postsData[i]);
+        };
+      };
+    return postsArr;
+    };
+  };
+
+  var showFilterPosts = function(postCategories){
+    $('#posts').children().remove();
+    for(var i = 0; i < postCategories.length; i++){
+      $('#posts').append('<li>' + postCategories[i].body + '</li>'); };
   };
 
   var setCategoriesData = function(input){
@@ -46,9 +72,9 @@ var App = (function(){
     $.ajax({
     url: 'http://localhost:3000/categories',
     type: 'GET',
-    }).done(function(categoriesData){
-    setCategoriesData(categoriesData);
-    showAllCategories(categoriesData);
+    }).done(function(data){
+    setCategoriesData(data);
+    showAllCategories(data);
     }).fail(function(jqXHR, textStatus, errorThrown){
     trace(jqXHR, textStatus, errorThrown);
     });
@@ -74,12 +100,11 @@ var App = (function(){
     });
   };
 
-
   var showAllCategories = function(categoriesData){
       for(var i = 0; i < categoriesData.length; i++){
       $('#post-category').append('<li><input type="checkbox" name="categories" value="' + categoriesData[i].id+'"  id="' +categoriesData[i].id + '" />' + categoriesData[i].name + '</li>' );
 
-      $('#delete-category').append('<option id="category' + categoriesData[i].id + '" value="'+categoriesData[i].id +'">' +categoriesData[i].name +'</option>');
+      $('.select-category').append('<option id="category' + categoriesData[i].id + '" value="'+categoriesData[i].id +'">' +categoriesData[i].name +'</option>');
       };
     };
 
@@ -123,7 +148,9 @@ var App = (function(){
       type: 'GET',
     }).done(function(postsData){
      setPostsData(postsData);
-     showAllPosts(postsData);
+    // showAllPosts(postsData);
+    showFilterPosts(getFilterPosts($('#filter-category').val()));
+    showSelectPostOptions(postsData);
     }).fail(function(jqXHR, textStatus, errorThrown){
       trace(jqXHR, textStatus, errorThrown);
     });
@@ -151,16 +178,20 @@ var App = (function(){
     });
   };
 
-  var showAllPosts = function(postsData){
+  // var showAllPosts = function(){
+  //   for(var i = 0; i < postsData.length; i++){
+  //     $('#posts').append('<li id="lipost' + postsData[i].id + '">' + postsData[i].body + '</li>');
+  //   };
+  // };
+
+  var showSelectPostOptions = function(postsData){
     for(var i = 0; i < postsData.length; i++){
-      $('#posts').append('<li id="lipost' + postsData[i].id + '">' + postsData[i].body + '</li>');
       $('#delete-post').append('<option id="post'+postsData[i].id+ '" value="'+postsData[i].id +'">' +postsData[i].title +'</option>');
     };
   };
 
-  var showPostsCategories = function(postCategories){
-    for(var i = 0; i < postCategories.length; i++){
-      $('#posts').append('<li>' + postCategories[i].body + '</li>' + postCategories[i]) };
+  var updatePost = function(){
+   // /posts/:id(.:format)
   };
 
   var removePost = function(e){
@@ -231,6 +262,8 @@ var App = (function(){
 
   return{
     init: init,
+    getCategories:getCategories,
+    getPostsData:getPostsData
     };
 })();
 
