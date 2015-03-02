@@ -52,6 +52,28 @@ App.submitPost = function(event) {
   return false;
 };
 
+App.Post = function(remotePost){
+ this.title = remotePost.title;
+  this.body = remotePost.body;+};
+
+App.Post.prototype.render = function(){
+  var html = "<h2>" + this.title + "</h2>";
+  html += "<p>" + this.body + "</p>";
+ return html;
+};
+
+App.postHandler = function(remotePosts){
+ var html = "<ul>", post;
+
+  remotePosts.forEach(function(remotePost){
+    post = new App.Post(remotePost);
+   html += post.render();
+  })
+
+  html += "</ul>";
+ $('.posts').append(html);
+};
+
 $(document).ready(function(){
   var $userForm = $('form#user-form');
   $userForm.on('submit', function(e){
