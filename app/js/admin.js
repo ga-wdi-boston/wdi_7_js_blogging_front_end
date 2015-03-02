@@ -7,14 +7,6 @@ var trace = function(){
   }
 };
 
-var display = function(data){
-  var string = '';
-  for(var i = 0; i < data.length; i++){
-    string += '<p>' + data[i].title + '</p>' + '<p>' + data[i].body + '</p>';
-    $('#posts').html(string);
-  };
-};
-
 var App = App || {};
 
 $(document).ready(function(){
