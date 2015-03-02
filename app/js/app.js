@@ -67,9 +67,12 @@ App.editPost = function(post_id){
 
 
   var $saveButton = $('#save');
-      $saveButton.on('submit', function(event){
+      $saveButton.on('click', function(event){
         App.updatePost(event, post_id);
+        $newTitle = $('#post-title').val();
+        $newBody = $('#post-body').val();
         $post.html('<h3>' + $newTitle + '</h3>' + '<p>' + $newBody + '</p>' + '<input type=button class=edit id=' + post_id + ' value="Edit Post" >' + '<input type=button class=delete id=' + post_id + ' value="Delete Post" >');
+          buttonEventHandler();
         });
 
   var $cancelButton = $('#cancel');
@@ -93,10 +96,10 @@ App.updatePost = function(event, post_id){
     },
   }).done(function(data){
     trace(data);
-    buttonEventHandler();
   }).fail(function(jqXHR, textStatus, errorThrown){
     trace(jqXHR, textStatus, errorThrown);
   });
+  return false;
 };
 
 
