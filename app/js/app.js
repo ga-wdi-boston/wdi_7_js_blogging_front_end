@@ -40,6 +40,7 @@ App.addPost = function(post){
   };
 
 App.deletePost = function(post_id){
+  if(event.preventDefault) event.preventDefault();
   $.ajax({
     url: 'http://localhost:3000/posts/' + parseInt(post_id),
     type: 'DELETE',
@@ -52,10 +53,12 @@ App.deletePost = function(post_id){
   });
 };
 
-App.updatePost = function(post_id, new_title, new_body){
+App.updatePost = function(post_id, post, new_title, new_body){
+  if(event.preventDefault) event.preventDefault();
   $.ajax({
-    url: 'http://localhost:3000/posts' + parseInt(post_id),
+    url: 'http://localhost:3000/posts/' + parseInt(post_id),
     type: 'PATCH',
+    headers: {'AUTHORIZATION': '109885dca2fc451fbca7d7795ff65355'},
     data: {
       post: {
       title: new_title,
@@ -64,8 +67,8 @@ App.updatePost = function(post_id, new_title, new_body){
     },
   }).done(function(post){
     trace(post)
-    $post.html('<h3>' + new_title + '</h3>' + '<p>' + new_body + '</p>' + '<input type=button class=edit id=' + post_id + ' value="Edit Post" >' + '<input type=button class=delete id=' + post_id + ' value="Delete Post" >');
-    buttonEventHandler();
+    post.html('<h3>' + new_title + '</h3>' + '<p>' + new_body + '</p>' + '<input type=button class=edit id=' + post_id + ' value="Edit Post" >' + '<input type=button class=delete id=' + post_id + ' value="Delete Post" >');
+    // buttonEventHandler();
   }).fail(function(jqXHR, textStatus, errorThrown){
     trace(jqXHR, textStatus, errorThrown);
   });
@@ -75,7 +78,6 @@ App.editPost = function(post_id){
   var $editButtons = $('.edit');
   $editButtons.unbind();
 
-  var postId = parseInt(post_id);
   var $newTitle, $newBody;
   var $title = $('#' + post_id + '.post h3').text();
   var $body = $('#' + post_id + '.post :not(h3)').text(); // :not removes elements from the set of matched elements
@@ -85,7 +87,7 @@ App.editPost = function(post_id){
   $post.html('<div class="post-form"><form id="edit-post-form"><div class="form-group"><input name="post-title" type="text" value="'+ $title +'" id=' + post_id + '></div><div class="form-group"><label for="post-body">Post Body</label><textarea name="post-body" id="post-body">' + $body + '</textarea></div><div class="form-group"><input type="button" id="save" value="Save Post" /><input type="button" id="cancel" value="Cancel" /></div></form></div>');
 
   var $saveButton = $('#save');
-      $saveButton.on('click', App.updatePost(postId, $newTitle, $newBody));
+      $saveButton.on('click', App.updatePost(post_id, $post, $newTitle, $newBody));
 
   var $cancelButton = $('#cancel');
       $cancelButton.on('click', function(){
