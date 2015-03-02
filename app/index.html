@@ -31,10 +31,29 @@
       </header>
 
       <div class="posts">
+
         <p>Placeholder content.</p>
+        <button type="button" id="button1">Show All Users</button>
+        <div id="posts">
+        </div>
+
       </div>
 
       <div class="forms">
+        <div class="category-form">
+          <h2>Create a new Category</h2>
+          <form id="new-category-form">
+            <div class="form-group">
+              <label for="category-title">Category Title</label>
+              <input name="category-title" type="text" placeholder="category" id="category" />
+            </div>
+            <div class="form-group">
+              <input type="submit" id='submit' value="Create Category" />
+            </div>
+          </form>
+        </div>
+
+
         <div class="post-form">
           <h2>Create a new post</h2>
           <form id="new-post-form">
